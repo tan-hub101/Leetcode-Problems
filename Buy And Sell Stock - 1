@@ -1,0 +1,18 @@
+public int maxProfit(int[] prices) {
+        if(prices == null || prices.length == 0 || prices.length == 1){
+            return 0;
+        }
+        
+        //keeping track of maximum profit
+        //and minimum price
+        //only 1 transaction is allowed
+        //find cheapest
+        int maxProfit=0,minPrice=prices[0];
+        for(int currBuyingPrice=1;currBuyingPrice<prices.length;currBuyingPrice++){
+            if(prices[currBuyingPrice] < minPrice){
+                minPrice = prices[currBuyingPrice];
+            }
+            maxProfit = Math.max(maxProfit,prices[currBuyingPrice]-minPrice);
+        }
+        return maxProfit;
+    }
