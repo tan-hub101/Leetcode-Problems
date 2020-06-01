@@ -17,11 +17,13 @@ public int minDistance(String word1, String word2) {
 	                    res[i][j]=j;
 	                }else if(j==0){
 	                    res[i][j]=i;
-	                }//same char -> no operation req
+	                }
+			//same char -> no operation req
 	                //both pointers move to left
 	                else if(word1.charAt(i-1) == word2.charAt(j-1)){
 	                    res[i][j]=res[i-1][j-1];
-	                }//Min of Insert,replace,remove
+	                }
+			//Min of Insert,replace,remove
 	                else{
 	                    res[i][j]=Math.min(res[i-1][j-1]+1,Math.min(res[i][j-1]+1,res[i-1][j]+1));
 	                }
