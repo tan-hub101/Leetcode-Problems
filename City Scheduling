@@ -1,0 +1,21 @@
+    //Profit Margin
+    public int twoCitySchedCost(int[][] costs) {
+        if(costs.length == 1){
+	        return costs[0][0]<costs[0][1]?costs[0][0]:costs[0][1];
+	     }
+		 Arrays.sort(costs, new Comparator<int[]>() {
+
+				@Override
+				public int compare(int[] list1, int[] list2) {
+					return list1[1]-list1[0] > list2[1]-list2[0] ? -1 : 1;
+				}
+			});
+		 int size = costs.length;
+		 int minCost=0;
+		 //choosing A till first half
+		 //then choosing B
+		 for(int j=0;j<size;j++) {
+			 minCost += j < size/2 ? costs[j][0]:costs[j][1];
+		 }
+		 return minCost;   
+    }
