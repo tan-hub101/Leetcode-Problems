@@ -1,0 +1,41 @@
+public List<List<Integer>> levelOrder(TreeNode root) {
+       
+        List<List<Integer>> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+        
+        if(root.left == null && root.right == null){
+           list.add(new ArrayList<>(Arrays.asList(root.val)));
+           return list;
+        }
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        list.add(new ArrayList<>(Arrays.asList(root.val)));
+        int prevChildrenSize = 1, nextChildrenSize=0;
+             
+        while(!queue.isEmpty()){
+            nextChildrenSize = 0;
+            List<Integer> children = new ArrayList<>();
+            while(prevChildrenSize > 0){
+                TreeNode parent = queue.poll();
+                if(parent.left != null){
+                    queue.offer(parent.left);
+                    nextChildrenSize++;
+                    children.add(parent.left.val);
+                }
+                if(parent.right != null){
+                    queue.offer(parent.right);
+                    nextChildrenSize++;
+                    children.add(parent.right.val);
+                }
+                prevChildrenSize--;
+            } 
+            if(children.size() != 0){
+                list.add(children);
+            }
+            prevChildrenSize = nextChildrenSize;
+        }
+        return list;
+    }
