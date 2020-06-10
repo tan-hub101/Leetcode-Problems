@@ -1,0 +1,23 @@
+public boolean isSubsequence(String s, String t) {
+        
+        if((s.isEmpty() && t.isEmpty()) || (s.equals(t))){
+            return true;
+        }
+        
+        if((t.isEmpty()) || (t.length() < s.length())){
+            return false;
+        }
+        
+        int match = 0, i=0,j=0;
+        while(i < s.length() && j < t.length()){
+            if(s.charAt(i) == t.charAt(j)){
+                match++;
+                i++;j++;continue;
+            }
+            j++;
+        }
+        if(match == s.length()){
+            return true;
+        }
+        return false;
+    }
