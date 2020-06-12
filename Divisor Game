@@ -1,0 +1,26 @@
+class Solution {
+    int chance = 1;
+    public boolean divisorGame(int N) {
+        int[] a = new int[N-1];
+        for(int i=0;i<a.length;i++){
+            a[i] = i+1;
+        }
+        return findWhoWins(a,N,a.length);
+    }
+    boolean findWhoWins(int[] a,int N, int size){
+        
+        if(N == 1 || size == 0){
+            if(chance % 2 == 0){
+                return true;
+            }
+            return false;
+        }
+        
+        chance++;
+        if((N % a[size-1]) == 0){
+            return (findWhoWins(a,N-a[size-1],size-1));
+        }else{
+            return findWhoWins(a,N,size-1);
+        }
+    }
+}
