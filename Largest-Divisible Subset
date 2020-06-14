@@ -1,0 +1,40 @@
+public List<Integer> largestDivisibleSubset(int[] nums) {
+        
+        List<Integer> list = new ArrayList<>();
+        
+        if(nums.length == 0){
+            return list;
+        }
+        if(nums.length == 1)
+            return Arrays.asList(nums[0]);
+        
+        Arrays.sort(nums);
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 0, dp.length, 1);
+        int k=1,max = Integer.MIN_VALUE,index=0;
+        for(int i=1;i<dp.length;i++){
+            int j = i-1;
+            while(j >= 0){
+                if(nums[i] % nums[j] == 0){
+                    dp[k] = dp[j]+1 > dp[k] ? dp[j]+1:dp[k];
+                    if(dp[k] > max){
+                        max = dp[k];
+                        index = k;
+                    }
+                }
+                j--;
+            }
+            k++;
+        }
+        
+        list.add(nums[index]);
+        int count=1, largest = nums[index];
+        for(int i=index-1;i>=0;i--){
+            if(largest % nums[i] == 0 && dp[i]+count == max){
+                list.add(nums[i]);
+                largest = nums[i];
+                count++;
+            }
+        }
+        return list;
+    }
