@@ -1,0 +1,23 @@
+public int hIndex(int[] citations) {
+        
+        if(citations.length == 0){
+            return citations.length;
+        }
+        int n = citations.length;
+        int h = n, count=0;
+        int i = n-1;
+        while(h > 0){
+           while(i >=0 && citations[i]>=h){
+               count++;
+               i--;
+               if(count == h){
+                  return h;
+               }
+           }
+           h--; 
+           if(count == h){
+                  return h;
+           }
+        }
+       return h; 
+    }
