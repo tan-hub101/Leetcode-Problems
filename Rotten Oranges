@@ -1,0 +1,81 @@
+class Solution {
+    int row, col;
+    class Position{
+        int x,y;
+        public Position(int a, int b){
+            x = a;
+            y = b;
+        } 
+    }
+    
+    public int orangesRotting(int[][] grid) {
+        if(grid.length == 0){
+            return 0;
+        }
+        int toBeRotten = 0, totalOnes = 0;
+        row = grid.length;
+        col = grid[0].length;
+        int time = 0, prev=0,next;
+        boolean ifChanged;
+        
+        Queue<Position> queue = new LinkedList<>();
+        //Traversing matrix for 2's and total 1's
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i][j] == 2){
+                    queue.offer(new Position(i,j)); 
+                    prev++;
+                }else if(grid[i][j] == 1){
+                    totalOnes++;
+                }
+            }
+        }
+        
+        //BFS -> minimum + efficient traversal + fixed coordinates to traverse
+        while(!queue.isEmpty()){
+            next = 0;
+            ifChanged = false;
+            while(prev > 0){
+                Position rotten = queue.poll();
+                if(changeToTwo(rotten.x+1,rotten.y,grid)){
+                    queue.offer(new Position(rotten.x+1,rotten.y));
+                    next++;
+                    toBeRotten++;
+                    ifChanged = true;
+                }
+                if(changeToTwo(rotten.x-1,rotten.y,grid)){
+                    queue.offer(new Position(rotten.x-1,rotten.y));
+                    next++;
+                    toBeRotten++;
+                    ifChanged = true;
+                }
+                if(changeToTwo(rotten.x,rotten.y+1,grid)){
+                    queue.offer(new Position(rotten.x,rotten.y+1));
+                    next++;
+                    toBeRotten++;
+                    ifChanged = true;
+                }
+                if(changeToTwo(rotten.x,rotten.y-1,grid)){
+                    queue.offer(new Position(rotten.x,rotten.y-1));
+                    next++;
+                    toBeRotten++;
+                    ifChanged = true;
+                }
+                prev--;
+            }
+            if(ifChanged){
+                time++;
+            }
+            prev = next;
+        }
+       return toBeRotten == totalOnes ? time : -1; 
+    }
+    
+    boolean changeToTwo(int i,int j,int[][] grid) {
+        if(i >= 0 && i < row && j >= 0 && j < col && grid[i][j] == 1) {
+            grid[i][j] = 2;
+            return true;
+        }
+        return false;
+    }
+}
