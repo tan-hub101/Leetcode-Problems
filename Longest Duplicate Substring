@@ -1,3 +1,4 @@
+//Solution 4 -> trie
 //Solution 1 -> Rabin Karp (Pattern Matching)
 class Solution {
     int prime = 10000007;
