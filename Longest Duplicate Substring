@@ -1,0 +1,172 @@
+//Solution 1 -> Rabin Karp (Pattern Matching)
+class Solution {
+    int prime = 10000007;
+    int[] power;
+    
+    public String longestDupSubstring(String S) {
+        
+        int n = S.length();
+        power = new int[n];
+        power[0]=1;
+        for(int i=1;i<n;i++){
+            power[i] = (power[i-1]*26) % prime;
+        }
+        //Linear search possible 
+        //but
+        //Binary Search(optimization)
+        //to avoid checking all                             
+        //positions (only half)
+        String res="";
+        int l=1,r=n,mid;
+        while(l <= r){
+            mid = l + ((r-l)/2);
+            String curr = rabin_karp(S,mid);
+            if(curr.length() > res.length()){
+                res = curr;
+                l = mid+1;
+            }else{
+                r = mid-1;
+            }  
+        }
+        return res; 
+    }
+    //To check if any substring 
+    //exists with this len in S
+    //len -> length of pattern
+    String rabin_karp(String S,int len){
+        if(len == 0){
+            return "";
+        }
+        //Generation of hashcode
+        int n = S.length();
+        int curr = 0;
+        //For comparing strings
+        //when hashcode matches (O(1))
+        //Storing start index of string
+        Map<Integer,List<Integer>> hash = new HashMap<>();
+        
+        //Calculating hashcode for pattern before len
+        for(int i=0;i<len;i++){
+            curr = (curr * 26 + (S.charAt(i)-'a')) % prime;
+        }
+        //String at index 0
+        //has "curr" hash 
+        //String length = len
+        //Arrays.asList -> fixed size array
+        //can not add more
+        hash.put(curr,new ArrayList<>(Arrays.asList(0)));
+        
+        //Searching for
+        //matching hash in rest
+        for(int i=len;i<n;i++){
+            curr  = ((curr - power[len-1]*(S.charAt(i-len)-'a')) % prime + prime) % prime;
+            curr  = (curr*26 + (S.charAt(i)-'a')) % prime;
+            
+            if(hash.containsKey(curr)){
+                List<Integer> list = hash.get(curr);
+                for(Integer start : list){
+                	String a = S.substring(start, start+len);
+                	String b = S.substring(i-len+1, i+1);
+                	if(a.equals(b)) {
+                		return a;
+                	}
+                }
+                //ConcurrmodifException
+                list.add(i-len+1);
+                hash.replace(curr,list);
+            }else{
+                List<Integer> temp = new ArrayList<>(Arrays.asList(i-len+1));
+                hash.put(curr,temp);
+            }
+        }
+        return "";
+    }
+}
+<--------------------------------------------->
+//Solution 2 -> Memory Issues (Suffix Array)
+public String longestDupSubstring(String S) {
+        
+        int n = S.length();
+        //creating suffixes
+        String[] suffixes = new String[n];
+        int k=0;
+        for(int i=0;i<n;i++){
+            suffixes[k] = S.substring(i,n);
+            //Memory issue due to substring()
+            //substring part is copied 
+            //to another address -> O(N)
+            //new object
+            k++;
+        }
+        //Sort suffixes array
+        Arrays.sort(suffixes);
+        //perform longest common prefix b/w 
+        //adjacent strings
+        for(int i=0;i<n-1;i++){
+            lcp(suffixes[i],suffixes[i+1]);
+        }
+        return lds;
+    }
+    //Finding longest common prefix
+    void lcp(String a, String b){
+        int n = Math.min(a.length(),b.length());
+        StringBuilder s = new StringBuilder();
+        int localMax = 0;
+        
+        for(int i=0;i<n;i++){
+            if(a.charAt(i) == b.charAt(i)){
+                s.append(a.charAt(i));
+                localMax++;
+            }else {
+            	break;
+            }
+        }
+        if(localMax > max){
+        	max = localMax;
+            lds = s.toString();
+        }
+    }  
+<--------------------------------------------------------->
+//Solution 3 -> (Variation of LCS) Memory Issues
+public String longestDupSubstring(String S) {
+        
+        int n = S.length();
+        int[][] dp = new int[n+1][n+1];
+        findCommonSubstringLen(S,S,n,n,dp); 
+        return backtrack(S);
+    }
+    void findCommonSubstringLen(String S, String R, int n,int m, int[][] dp){
+        
+        int r = dp.length;
+        int c = dp[0].length;
+        
+        for(int i=0;i<r;i++){
+            dp[i][0] = 0;
+        }
+        for(int j=0;j<c;j++){
+            dp[0][j] = 0;
+        }
+        for(int i=1;i<r;i++){
+            for(int j=1;j<c;j++){
+                if(S.charAt(i-1) == R.charAt(j-1) && i != j){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                    //storing for backtracking later
+                    if(dp[i][j] > max){
+                        max = dp[i][j]; 
+                        x = i;
+                        y = j;
+                    }
+                }else{
+                    dp[i][j] = 0;
+                }
+            }
+        }
+    }
+    String backtrack(String S){
+        StringBuilder s = new StringBuilder();
+        while(x >= 0 && y >= 0 && max > 0){
+            s.append(S.charAt(x-1));
+            x--;y--;max--;
+        }
+        return s.reverse().toString();
+    }
