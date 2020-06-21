@@ -1,0 +1,32 @@
+public ListNode removeNthFromEnd(ListNode head, int n) {
+        
+        if(head == null || head.next == null){
+            return null;
+        }
+
+        //getting total nodes
+        ListNode temp = head;
+        int count = 0;
+        while(temp != null){
+            count++;
+            temp = temp.next;
+        }
+        if(count <= n){
+            ListNode nextNode = head.next;
+            head = nextNode;
+            return head;
+        }
+        int x = 0;
+        ListNode head2 = head;
+        while(head != null){
+            x++;
+            if(count - x == n){
+                //delete
+                ListNode nodeToBeDeleted = head.next;
+                ListNode nextNode = nodeToBeDeleted.next;
+                head.next = nextNode;
+            }
+            head = head.next;
+        }
+        return head2;
+    }
