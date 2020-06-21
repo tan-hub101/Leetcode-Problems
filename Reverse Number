@@ -1,0 +1,50 @@
+<--Solution1-->
+public int reverse(int x) {
+        if(x >= -9 && x <= 9){
+            return x;
+        }
+        StringBuilder s = new StringBuilder();
+        boolean isNegative = false;
+        if(x < 0) {
+        	isNegative = true;
+        	x = -x;
+        }
+        while(x > 0){
+            int a = x%10;
+            x = x/10;
+            s.append(a);
+        }
+        if(s.length() == 0) {
+        	return 0;
+        }
+        long res = Long.parseLong(s.toString());
+        
+        long ans = Integer.MIN_VALUE > res 
+            || res > Integer.MAX_VALUE-1 ? 0 : res;
+        
+        return (int) (isNegative ? -ans:ans);  
+    }
+    <--Solu 2-->
+    public int reverse(int x) {
+
+        int result = 0;
+        
+        while (x != 0) {
+            
+            int pop = x % 10;
+            
+            x = x / 10;
+            
+            if (result > Integer.MAX_VALUE / 10) {
+                return 0;
+            }
+            
+            if (result < Integer.MIN_VALUE / 10) {
+                return 0;
+            }
+            
+            result = result * 10 + pop;
+        }
+        
+        return result;
+    }
