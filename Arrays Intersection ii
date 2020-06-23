@@ -1,0 +1,36 @@
+//2 Pointer - sort Array
+//Approach-2 (HashTable)
+public int[] intersect(int[] nums1, int[] nums2) {
+        
+        if(nums1.length == 0 && nums2.length == 0){
+            return new int[0];
+        }
+        
+        if(nums1.length == 0 || nums2.length == 0){
+            return new int[0];
+        }
+        
+        Map<Integer,Integer> map = new HashMap<>();
+        if(nums1.length > nums2.length){
+            return find(nums1,nums2,map);
+        }
+        return find(nums2,nums1,map);
+    }
+    int[] find(int[] a,int[] b,Map<Integer,Integer> map){
+        
+        List<Integer> list = new ArrayList<>();
+        
+        for(int i : a){
+            map.put(i,map.getOrDefault(i,0)+1);
+        }
+        for(int i : b){
+            if(map.containsKey(i)){
+                list.add(i);
+                map.replace(i,map.get(i)-1);
+                if(map.get(i) == 0){
+                    map.remove(i);
+                }
+            }
+        }
+        return list.stream().mapToInt(i->i).toArray();
+    }
