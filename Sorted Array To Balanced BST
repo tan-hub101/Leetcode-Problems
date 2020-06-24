@@ -1,0 +1,23 @@
+public TreeNode sortedArrayToBST(int[] nums) {
+        
+        if(nums.length == 0){
+            return null;
+        }
+        if(nums.length == 1){
+            return new TreeNode(nums[0]);
+        }
+        return createBalancedBST(nums,0,nums.length-1);
+    }
+    
+    TreeNode createBalancedBST(int[] nums,int low, int high){
+        
+        if(low > high){
+            return null;
+        }
+        int mid = low + (high-low)/2;
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = createBalancedBST(nums,low,mid-1);
+        root.right = createBalancedBST(nums,mid+1,high);
+        
+        return root;
+    }
