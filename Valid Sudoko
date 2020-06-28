@@ -1,0 +1,40 @@
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        
+        for(int i=0;i<9;i++){
+                //row check
+                if(!isValid(board,i,i,0,8)){
+                    return false;
+                }
+                //column check
+                if(!isValid(board,0,8,i,i)){
+                    return false;
+                }
+                //grid check
+                //start = /
+                //end = % (max)
+                if(!isValid(board,(i/3)*3,(i/3)*3+2,(i%3)*3,(i%3)*3+2)){
+                    return false;
+                }
+            }
+       return true; 
+    }
+    
+    boolean isValid(char[][] board, int rStart, int rEnd, int cStart, int cEnd){
+        //boolean arr to check
+        boolean[] a = new boolean[9];
+        
+        for(int i = rStart;i<=rEnd;i++){
+            for(int j=cStart;j<=cEnd;j++){
+                char c = board[i][j];
+                if(c != '.'){
+                    if(a[c-'1']){
+                        return false;
+                    }
+                    a[c-'1'] = true;
+                }
+            }
+        }
+        return true;
+    }
+}
