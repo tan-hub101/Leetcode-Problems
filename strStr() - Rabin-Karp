@@ -1,3 +1,41 @@
+<--Solution 1--> O(hn)
+class Solution {
+    public int strStr(String haystack, String needle) {
+        
+        if((haystack.isEmpty() && needle.isEmpty()) || needle.isEmpty()) {
+            return 0;
+        }
+        
+        if((haystack.isEmpty()) || (haystack.length() < needle.length())){
+            return -1;
+        }
+        
+        int i = 0;
+        int n = needle.length();
+        int h = haystack.length();
+        while(i <= (h-n)){
+            if(checkIfFound(haystack,needle,i)){
+                return i;
+            }
+            i++;
+        }
+        return -1;   
+    }
+    boolean checkIfFound(String haystack,String needle,int start){
+        
+        int j=0;
+        while(j < needle.length()){
+            if(needle.charAt(j) != haystack.charAt(start)){
+                return false;
+            }
+            j++;
+            start++;
+        }
+        return true;
+    }
+}
+
+<----Solution 2----> Rabin-Karp
 public int strStr(String haystack, String needle) {
         
         if(haystack.isEmpty() && !needle.isEmpty()){
