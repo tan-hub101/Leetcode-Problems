@@ -1,0 +1,35 @@
+//can be done through recursion also.
+public String countAndSay(int n) {
+        
+        if(n == 1){
+            return "1";
+        }
+        
+        StringBuilder s = new StringBuilder();
+        StringBuilder t;
+        //Base case
+        s.append("11");
+        int len;
+        int i = 3;
+        char c,d=' ';
+        while(i <= n){
+            len = s.length();
+            int j = 0, freq = 1;
+            t = new StringBuilder();
+            while(j < len-1){
+                c = s.charAt(j);
+                d = s.charAt(j+1);
+                if(c != d){
+                    t.append(freq).append(c);
+                    freq = 1;
+                }else {
+                	freq++;
+                }
+                j++;    
+            }
+            t.append(freq).append(d);
+            s = t;
+            i++;
+        }
+        return s.toString();
+    }
