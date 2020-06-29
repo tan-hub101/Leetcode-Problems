@@ -1,5 +1,6 @@
+//Vertical scanning -> checking at each column before moving on
 //Trie
-//Taking 1 String as basis
+//Taking 1 String as basis (Horizontal Scanning)
 public String longestCommonPrefix(String[] strs) {
         
 	if(strs == null || strs.length == 0) {
