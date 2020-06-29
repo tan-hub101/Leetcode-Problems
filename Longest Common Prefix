@@ -1,0 +1,27 @@
+//Trie
+//Taking 1 String as basis
+public String longestCommonPrefix(String[] strs) {
+        
+	if(strs == null || strs.length == 0) {
+		return "";
+	}
+        String prefix = strs[0];
+        int i = 1;
+        int n = strs.length;
+        
+        while(i < n && !prefix.isEmpty()){
+            int j = 0;
+            String curr = strs[i];
+            int m = strs[i].length();
+            int s = prefix.length();
+            while(j < m && j < s) {
+            	if(curr.charAt(j) != prefix.charAt(j)) {
+            		break;
+            	}
+            	j++;
+            }
+            prefix = prefix.substring(0, j);
+            i++;
+        }
+        return prefix;  
+    }
