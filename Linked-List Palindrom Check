@@ -1,0 +1,31 @@
+class Solution {
+    ListNode head1;
+    ListNode left;
+    //Recursively
+    public boolean isPalindrome(ListNode head) {
+        
+        head1 = head;
+        return findIfPalindrome(head); 
+    }
+    
+    boolean findIfPalindrome(ListNode right){
+        
+        //right will go till last
+        //and return ->
+        //then compare
+        if(right == null){
+            return true;
+        }
+        left = head1;
+        boolean isPal = findIfPalindrome(right.next);
+        if(!isPal){
+            return false;
+        }
+        boolean res = false;
+        if(right.val == left.val){
+            res = true;
+        }
+        left = left.next;
+        return res; 
+    }
+}
