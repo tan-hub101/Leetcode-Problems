@@ -1,0 +1,59 @@
+//Solution 2
+//Can be done in O(1) space
+//keeping first row and col as indicators
+//that corresponding row/col
+//contains 0.
+
+//Solution1
+class Solution {
+    class Pos{
+        int x,y;
+        public Pos(int x,int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+    public void setZeroes(int[][] matrix) {
+        
+        int r = matrix.length;
+        int c = matrix[0].length;
+        List<Pos> list = new ArrayList<>();
+        //Storing 0 positions
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(matrix[i][j] == 0){
+                    list.add(new Pos(i,j));
+                }
+            }
+        }
+        for(Pos position : list){
+            int a = position.x;
+            int b = position.y;
+            //turning Row
+            turnToZero(matrix,0,b,r,c,true);
+            //turning col
+            turnToZero(matrix,a,0,r,c,false);
+        }
+    }
+    
+    void turnToZero(int[][] matrix,int i,int j,int r,int c,boolean isRow){
+        
+        //row turning
+        if(isRow){
+            while(i < r){
+                if(matrix[i][j] != 0) {
+            		 matrix[i][j] = 0;
+            	}
+                i++;
+            }
+        }//col turning
+        else{
+            while(j < c){
+                if(matrix[i][j] != 0) {
+           		 matrix[i][j] = 0;
+           	    }
+                j++;
+            }
+        } 
+    }
+}
