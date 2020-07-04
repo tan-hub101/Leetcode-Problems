@@ -1,0 +1,38 @@
+//LCSubstring with modification
+//Expand around center
+class Solution {
+    public String longestPalindrome(String s) {
+        
+        if(s == null || s.length() < 2){
+            return s;
+        }
+        
+        int n = s.length();
+        int i=0, start = 0, end = 0;
+        while(i < n){
+            int oddLen = getPalindromeLen(i,i,s,n);
+            int evenLen = getPalindromeLen(i,i+1,s,n);
+            int maxLen = Math.max(oddLen,evenLen);
+            //finding index where to apply maxlen
+           if(maxLen > end - start + 1){
+               //Both for even and odd
+               start = i - (maxLen - 1) / 2; 
+               end = i + maxLen / 2;
+           }
+            i++;
+        }
+        return s.substring(start,end+1);
+    }
+    
+    int getPalindromeLen(int left, int right, String s, int n){
+        
+        int min  = 0,max = n;
+        
+        while(left >= min && right < max && s.charAt(left) == s.charAt(right)){
+            left--;
+            right++;
+        }
+        
+        return right - left - 1;
+    }
+}
