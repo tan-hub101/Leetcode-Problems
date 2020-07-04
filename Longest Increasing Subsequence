@@ -1,0 +1,52 @@
+//Recursive
+int findLIS(int[] nums, int start,int last){
+        
+    	if(start == nums.length){
+            return count;
+        }
+        
+        if(nums[start] > last){
+            int newLast = nums[start];
+            
+            return Math.max(1 + findLIS(nums,start+1, newLast),
+                           findLIS(nums,start+1, last));
+        }
+        return findLIS(nums,start+1,last);
+    }
+
+//DP
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        
+        int n = nums.length;
+        int count = 0;
+        //not selected anything
+        int last = -1;
+        int[][] dp = new int[n][n+1];
+        for(int i=0;i<n;i++){
+        	for(int j=0;j<n;j++) {
+        		dp[i][j] = -1; 
+        	}
+        }
+        return findLIS(nums,0,last,dp);
+    }
+    
+   int findLIS(int[] nums, int start,int lastIndex, int[][] dp){
+       
+       if(start == nums.length){
+           return 0;
+       }
+       if(dp[start][lastIndex+1] != -1){
+           return dp[start][lastIndex+1];
+       }
+       if(lastIndex == -1 || (nums[start] > nums[lastIndex])) {
+    	   
+    	   dp[start][lastIndex+1] = Math.max(1 + findLIS(nums,start+1,start, dp),
+    			   						findLIS(nums,start+1,lastIndex, dp));
+       }
+       else {
+    	   dp[start][lastIndex+1] = findLIS(nums,start+1, lastIndex, dp);  
+       }
+       return dp[start][lastIndex+1];
+   }
+}
