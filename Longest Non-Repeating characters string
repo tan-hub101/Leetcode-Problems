@@ -1,0 +1,30 @@
+//Can be done through int[] arr = new int[26]
+//Can be done through hashmap element -> index
+
+//set solution
+public int lengthOfLongestSubstring(String s) {
+        
+        if(s == null || s.length() == 0){
+            return 0;
+        }
+        if(s.length() == 1){
+            return 1;
+        }
+        
+        int n = s.length();
+        int start = 0,end = 0;
+        int maxLen = Integer.MIN_VALUE;
+        Set<Character> set = new HashSet<>();
+        set.add(s.charAt(0));
+        
+        for(end = 1;end < n;end++){
+            char c = s.charAt(end);
+            //duplicate
+            while(!set.add(c)){
+                maxLen = Math.max(maxLen,end-start);
+                set.remove(s.charAt(start));
+                start++;
+            } 
+        }
+        return Math.max(maxLen,end-start);
+    }
