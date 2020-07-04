@@ -1,0 +1,85 @@
+import java.util.Map.Entry;
+
+class Solution {
+    <---Solution 2---->
+    //Arrays.sort (faster)
+    public List<List<String>> groupAnagrams(String[] strs) {
+        
+        List<List<String>> res = new ArrayList<>();
+        if(strs == null || strs.length == 0){
+            return res;
+        }
+        if(strs.length == 1){
+            res.add(Arrays.asList(strs[0]));
+            return res;
+        }
+        
+        //map with sorted string -> list
+        Map<String,List<String>> map = new HashMap<>();
+        
+        String newStr;
+        for(String str : strs){
+            char[] arr = str.toCharArray();
+            Arrays.sort(arr);
+            newStr = String.valueOf(arr);
+            if(map.containsKey(newStr)){
+                map.get(newStr).add(str);
+            }else{
+                map.put(newStr,new ArrayList<>(Arrays.asList(str)));
+            }
+        }
+        return new ArrayList<>(map.values()); 
+    }
+    
+     <--Solution 1--->
+    //2 strings are anagram if they are equal
+    //after sorted
+    public List<List<String>> groupAnagrams(String[] strs) {
+        
+        List<List<String>> res = new ArrayList<>();
+        if(strs == null || strs.length == 0){
+            return res;
+        }
+        if(strs.length == 1){
+            res.add(Arrays.asList(strs[0]));
+            return res;
+        }
+        
+        //map with sorted string -> list
+        Map<String,List<String>> map = new HashMap<>();
+        
+        String newStr;
+        for(String str : strs){
+            newStr = sort(str);
+            if(map.containsKey(newStr)){
+                map.get(newStr).add(str);
+            }else{
+                map.put(newStr,new ArrayList<>(Arrays.asList(str)));
+            }
+        }
+        return new ArrayList<>(map.values()); 
+    }
+    //Counting sort -> O(K) 
+    //max len of element
+    //better than Klog(K)
+    //Arrays.sort
+    String sort(String str){
+        int[] count = new int[26];
+        int i = 0;
+        while(i < str.length()){
+            count[str.charAt(i)-'a']++;
+            i++;
+        }
+        StringBuilder t = new StringBuilder();
+        for(int j=0;j<26;j++){
+            int freq = 0;
+            if(count[j] != 0){
+                while(freq < count[j]) {
+            		t.append((char)(j+'a'));
+            		freq++;
+            	}
+            }
+        }
+        return t.toString();
+    }
+}
