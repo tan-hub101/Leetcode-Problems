@@ -1,0 +1,7 @@
+String getNumber(ListNode head){
+        
+        if(head == null){
+            return "";
+        }
+        return getNumber(head.next)+String.valueOf(head.val);
+ }
