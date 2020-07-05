@@ -1,0 +1,77 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        
+        if(headA == null && headB == null){
+            return null;
+        }
+        if(headA == null || headB == null){
+            return null;
+        }
+        
+        //length of headA n headB
+        int len1 = 0;
+        ListNode l1 = headA;
+        while(l1 != null){
+            len1++;
+            l1 = l1.next;
+        }
+        int len2 = 0;
+        ListNode l2 = headB;
+        while(l2 != null){
+            len2++;
+            l2 = l2.next;
+        }
+        int diff = Math.abs(len1 - len2);
+        ListNode smaller = len1 <= len2 ? headA : headB;
+        ListNode headC = null;
+        ListNode tailC = null;
+        if(diff > 0){
+            while(diff > 0){
+                ListNode temp = new ListNode(0);
+                if(headC == null){
+                    headC = temp;  
+                    tailC = temp;
+                }else{
+                    tailC.next = temp;
+                    tailC = temp;
+                }
+                diff--;
+            }
+            tailC.next = smaller;
+        }
+        //equal lengths
+        if(headC == null){
+            headC = headA;
+        }
+        
+        if(len1 <= len2){
+            while(headC != null && headB != null){
+                if(headC == headB){
+                    return headB;
+                }
+                headC = headC.next;
+                headB = headB.next;
+            }
+        }else{
+            while(headC != null && headA != null){
+                if(headC == headA){
+                    return headA;
+                }
+                headC = headC.next;
+                headA = headA.next;
+            }
+        }
+        return null;  
+    }
+}
