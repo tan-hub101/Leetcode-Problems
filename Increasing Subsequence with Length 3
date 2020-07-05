@@ -1,3 +1,22 @@
+<--Solution 1--->
+boolean findTriplet(int[] nums){
+        
+        int minOne = Integer.MAX_VALUE;
+        int minTwo = Integer.MAX_VALUE;
+        
+        for(int i : nums){
+            if(i < minOne){
+                minOne = i;
+            }else if(i > minOne){
+                minTwo = Math.min(i,minTwo);
+            }
+            if(i > minTwo){
+                return true;
+            }
+        }
+        return false;
+    }
+<-----Solution 2--->
 boolean findIfTripletSubsequence(int[] nums,int start, int last, int currLen){
         
         if(start == nums.length && currLen != 3){
