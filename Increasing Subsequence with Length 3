@@ -1,0 +1,16 @@
+boolean findIfTripletSubsequence(int[] nums,int start, int last, int currLen){
+        
+        if(start == nums.length && currLen != 3){
+            return false;
+        }
+        if(currLen == 3){
+            return true;
+        }
+        boolean taken = false;
+        if(last == -1 || nums[start] > nums[last]){
+            taken = findIfTripletSubsequence(nums,start+1,start,currLen + 1);
+        }
+        boolean notTaken = findIfTripletSubsequence(nums,start+1,last,currLen);
+        
+        return (taken || notTaken);
+    }
