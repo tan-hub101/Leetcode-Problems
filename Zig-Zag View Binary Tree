@@ -1,0 +1,53 @@
+//Queue Solution -> Reverse acc to. toggle flag
+//Stack Solution
+class Solution {
+    List<List<Integer>> res= new ArrayList<>();
+    
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        
+        if(root == null){
+            return res;
+        }
+        List<Integer> list = new ArrayList<>();
+        list.add(root.val);
+        res.add(list);
+        
+        Deque<TreeNode> stack = new LinkedList<>();
+        stack.push(root.left);
+        stack.push(root.right);
+        
+        int depth = 3;
+        
+        while(!stack.isEmpty()){
+            stack = giveStack(stack, depth);  
+            depth++;
+        }
+        return res;
+    }
+    
+    Deque<TreeNode> giveStack(Deque<TreeNode> stack, int depth){
+        
+        List<Integer> list = new ArrayList<>();
+        Deque<TreeNode> newStack = new LinkedList<>();
+        
+        while(!stack.isEmpty()){
+            TreeNode parent = stack.pop();
+            //Even level -> L -> R
+            if(parent != null){
+                if(depth % 2 == 0){
+                    newStack.push(parent.left);
+                    newStack.push(parent.right);
+                }//odd -> R -> L
+                else{
+                   newStack.push(parent.right);
+                   newStack.push(parent.left);
+                }
+                list.add(parent.val); 
+            }
+        }
+        if(list.size() != 0){
+            res.add(list);
+        }
+        return newStack;
+    }
+}
