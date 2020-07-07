@@ -1,0 +1,33 @@
+//With Extra Space
+    public Node connect(Node root) {
+        
+        if(root == null){
+            return null;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+        queue.offer(new Node(-2000));
+        
+        int prevNodesNumber = 1;
+        
+        while(!queue.isEmpty()){
+            while(queue.peek().val != -2000){
+                Node parent = queue.poll();
+                Node nextParent = queue.peek();
+                if(nextParent.val != -2000){
+                    parent.next = nextParent;
+                }
+                if(parent.left != null){
+                    queue.offer(parent.left);
+                }
+                if(parent.right != null){
+                    queue.offer(parent.right);
+                }  
+            }
+            queue.poll();
+            if(!queue.isEmpty()){
+                 queue.offer(new Node(-2000)); 
+            }
+        }
+        return root;
+    }
