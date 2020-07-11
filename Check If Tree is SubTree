@@ -1,0 +1,21 @@
+public boolean isSubtree(TreeNode s, TreeNode t) {
+        
+        if(s == null || t == null){
+            return false;
+        }
+        if(s.val == t.val && solve(s.left,t.left) && solve(s.right,t.right)){
+            return true;
+        }
+        return isSubtree(s.left,t) || isSubtree(s.right,t);
+    }
+
+    public boolean solve(TreeNode s, TreeNode t){
+        
+        if(s == null && t == null){
+            return true;
+        }
+        if(s == null || t == null || s.val != t.val){
+            return false;
+        }
+        return solve(s.left,t.left) && solve(s.right,t.right);
+    }
