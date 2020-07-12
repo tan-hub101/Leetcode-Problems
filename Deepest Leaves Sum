@@ -1,0 +1,32 @@
+class Solution {
+    //As these values are not changed 
+    //in every call
+    //Changed as result of a call
+    int maxDepth = 0;
+    int sum = 0;
+    public int deepestLeavesSum(TreeNode root) {
+        int currDepth = 0;
+        return findSum(root,currDepth); 
+    }
+    
+    int findSum(TreeNode root,int currDepth){
+        //base condition
+        if(root == null){
+            return sum;
+        }
+        //leaf node
+        if(root.left == null && root.right == null){
+            if(currDepth > maxDepth){
+                sum = root.val;
+                maxDepth = currDepth;
+            }else if(currDepth == maxDepth){
+                sum += root.val;
+            }
+            return sum;
+        }
+        //dfs
+        findSum(root.left,currDepth+1);
+        findSum(root.right,currDepth+1);
+        return sum;
+    }
+}
