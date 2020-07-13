@@ -1,0 +1,31 @@
+//No. of structurally unique BST with n nodes
+//No. of full bInary Tree with n+1 leaves
+
+public int catalan(int n) {
+		if(n == 0 || n == 1) {
+			return 1;
+		}
+		int i = 1, product = 0;
+		while(i <= n) {
+			product += catalan(i-1) * catalan(n-i);
+			i++;
+		}
+		return product;
+	}
+	public int catalan_dp(int n, int[] dp) {
+		
+		dp[0] = 1;
+		dp[1] = 1;
+		int i = 2, product = 0;
+		while(i <= n) {
+			int j = 1;
+			product = 0;
+			while(j <= i) {
+				product += dp[j-1] * dp[i-j];
+				j++;
+			}
+			dp[i] = product;
+			i++;
+		}
+		return dp[n];
+	}
