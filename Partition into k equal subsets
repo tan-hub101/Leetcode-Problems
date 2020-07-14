@@ -1,0 +1,45 @@
+class Solution {
+    
+    int subsetSum;
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        
+        int n = nums.length;
+        if(k == 0){
+            return false;
+        }
+        int sum = 0;
+        for(int i : nums){
+            sum += i;
+        }
+        if(sum % k != 0){
+            return false;
+        }
+        subsetSum = sum / k;
+        boolean[] used = new boolean[n];
+        return find(nums,k,0,used,0);
+    }
+    
+    boolean find(int[] nums,int k,int start,boolean[] used, int target){
+        
+        //not computing for last bucket
+        if(k == 1){
+            return true;
+        }
+        //solved for 1 bucket 
+        //move for next
+        if(target == subsetSum){
+            return find(nums,k-1,0,used,0);
+        }
+        for(int i = start; i < nums.length; i++){
+            if(!used[i] && nums[i]+target <= subsetSum){
+                used[i] = true;
+                if(find(nums,k,i+1,used,nums[i]+target)){
+                    return true;//solution found
+                }
+                //backtrack
+                used[i] = false;
+            }
+        }
+       return false; 
+    }
+}
