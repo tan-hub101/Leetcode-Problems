@@ -1,0 +1,35 @@
+//combinations of forming target
+//unbounded knapsack -> unlimited values -> coin change
+int find_recursive(int[] a,int target,int n){
+ if(target == 0){
+  return 1;
+ }
+ if(n == 0){
+  return 0;
+ }
+ if(a[n-1] <= target){
+  return find_recursive(a,target-a[n-1],n) + find_recursive(a,target,n-1);
+ }else{
+  return find_recursive(a,target,n-1);
+ }
+}
+
+static int find_dp(int[] a, int target,int n){
+	    int[][] dp = new int[n+1][target+1];
+	    for(int i=0;i<n+1;i++){
+	        dp[i][0] = 1;
+	    }
+	    for(int j=1;j<target+1;j++){
+	        dp[0][j] = 0;
+	    }
+	    for(int i=1;i<n+1;i++){
+	        for(int j = 1;j<target+1;j++){
+	            if(a[i-1] <= j){
+	                dp[i][j] = dp[i][j-a[i-1]] + dp[i-1][j];
+	            }else{
+	                dp[i][j] = dp[i-1][j];
+	            }
+	        }
+	    }
+	    return dp[n][target];
+	}
