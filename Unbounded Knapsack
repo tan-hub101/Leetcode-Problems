@@ -14,7 +14,7 @@ int find_recursive(int[] a,int target,int n){
  }
 }
 
-static int find_dp(int[] a, int target,int n){
+int find_dp(int[] a, int target,int n){
 	    int[][] dp = new int[n+1][target+1];
 	    for(int i=0;i<n+1;i++){
 	        dp[i][0] = 1;
