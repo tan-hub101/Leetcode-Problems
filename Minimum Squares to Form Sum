@@ -1,0 +1,17 @@
+static int findMinSquares(int n,int[] dp){
+	    if(n == 0){
+	        return 0;
+	    }
+	    if(dp[n] != -1) {
+	    	return dp[n];
+	    }
+	    int z = (int) Math.pow(n, 0.5);
+	    //storing largest value in min for comparison
+	    int minSquares = n;
+	    //12 + 12 + 12....n
+	    for(int i=1;i<=z;i++){
+	    	minSquares = Math.min(1 + findMinSquares(n - i*i,dp), minSquares);
+	    }
+	    dp[n] = minSquares;
+	    return minSquares;
+	}
