@@ -49,4 +49,23 @@ class Solution {
        }
        return dp[start][lastIndex+1];
    }
+   //Max Sum 
+   static int findMaxSumSeq(int[] arr,int start,int lastIdx,int[][] dp){
+	    
+	    if(start == arr.length){
+	        return 0;
+	    }
+	    if(dp[start][lastIdx+1] != -1){
+	        return dp[start][lastIdx+1];
+	    }
+	    
+	    if(lastIdx == -1 || arr[start] > arr[lastIdx]){
+	        dp[start][lastIdx+1] = Math.max(arr[start] + findMaxSumSeq(arr,start+1,start,dp),
+	                        findMaxSumSeq(arr,start+1,lastIdx,dp));
+	                        
+	    }else{
+	        dp[start][lastIdx+1] = findMaxSumSeq(arr,start+1,lastIdx,dp);
+	    }
+	    return dp[start][lastIdx+1];
+	}
 }
