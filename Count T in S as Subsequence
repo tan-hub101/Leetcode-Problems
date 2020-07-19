@@ -1,0 +1,62 @@
+int modulo = (int)(1e9 + 7);
+    
+    int subsequenceCount(String S, String T)
+    {
+        if((S.isEmpty() && T.isEmpty()) || (S.length() == T.length() && S.equals(T))){
+			return 1;
+		}
+		if(S.isEmpty() || S.length() < T.length()){
+			return 0;
+		}
+		int n = T.length();
+		int m = S.length();
+		long[][] dp = new long[m+1][n+1];
+		for(int i=0;i<m+1;i++){
+		    for(int j=0;j<n+1;j++){
+		        dp[i][j] = -1;
+		    }
+		}
+		//return (int) (count_mem(S,T,m,n,n,new StringBuilder(""),dp) % modulo);
+		return (int) (count(S,T) % modulo);
+    }
+    long count_mem(String S, String T, int s, int t, int targetLen, StringBuilder result,long[][] dp){
+			
+			if(result.length() == targetLen && result.reverse().toString().equals(T)){
+				return 1;
+			}
+			if(t == 0 || s == 0){
+				return 0;
+			}
+			if(dp[s][t] != -1){
+			    return dp[s][t];
+			}
+			if(S.charAt(s-1) == T.charAt(t-1)){
+				StringBuilder newResult = new StringBuilder (result);
+				newResult.append(S.charAt(s-1));
+				dp[s][t] = count_mem(S, T, s-1,t-1,targetLen,newResult,dp) + count_mem(S, T, s-1,t,targetLen,result,dp);
+			}else{
+				dp[s][t] =  count_mem(S, T, s-1,t,targetLen,result,dp);
+			}
+			return dp[s][t];
+	}
+	long count(String S, String T){
+	        int n = T.length();
+		    int m = S.length();
+		    long[][] dp = new long[m+1][n+1];
+		    for(int i=0;i<m+1;i++){
+		        dp[i][0] = 1;
+		    }
+		    for(int j=1;j<n+1;j++){
+		        dp[0][j] = 0;
+		    }
+			for(int i=1;i<m+1;i++){
+			    for(int j=1;j<n+1;j++){
+			        if(S.charAt(i-1) == T.charAt(j-1)){
+			            dp[i][j] = dp[i-1][j-1] % modulo + dp[i-1][j] % modulo;
+			        }else{
+			            dp[i][j] = dp[i-1][j] % modulo;
+			        }
+			    }
+			}
+			return dp[m][n];
+	}
