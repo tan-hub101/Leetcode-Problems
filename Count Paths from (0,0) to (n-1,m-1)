@@ -27,3 +27,22 @@ static int findWaystoReachEnd(){
 	                           
 	    return dp[currRow][currCol];
 	}
+	static long find(int currRow, int currCol){
+	    //Actually matrix ques
+	    //each cell taken as it is
+	    //reach row,col from 0,0
+	    long[][] dp = new long[row][col];
+	    for(int i = 0;i<row;i++){
+	        dp[i][0] = 1;
+	    }
+	    for(int j=1;j<col;j++){
+	        dp[0][j] = 1;
+	    }
+	    
+	    for(int i = 1;i<row;i++){
+	        for(int j=1;j<col;j++){
+	            dp[i][j] = dp[i-1][j] % mod + dp[i][j-1] % mod;
+	        }
+	    }
+	    return dp[row-1][col-1];
+	}
