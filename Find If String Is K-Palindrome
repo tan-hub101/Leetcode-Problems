@@ -1,0 +1,46 @@
+//
+static int findifKPalindrome(String str,int n,int k){
+	    if(isPalindrome(str)){
+	        return 1;
+	    }
+	    StringBuilder strRev = new StringBuilder(str);
+	    strRev.reverse();
+	    int[][] dp = new int[n][n];
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<n;j++){
+	            dp[i][j] = -1;
+	        }
+	    }
+	    int longestPalindromeLen = LCS(str,strRev.toString(),n,n,dp);
+	    if(n - longestPalindromeLen <= k){
+	        return 1;
+	    }
+	    return 0;
+	}
+	static int LCS(String str,String strRev,int n,int m, int[][] dp){
+	    if(n == 0 || m == 0){
+	        return 0;
+	    }
+	    if(dp[n-1][m-1] != -1){
+	        return dp[n-1][m-1];
+	    }
+	    if(str.charAt(n-1) == strRev.charAt(m-1)){
+	        dp[n-1][m-1] = 1 + LCS(str,strRev,n-1,m-1, dp);
+	    }else{
+	        dp[n-1][m-1] = Math.max(LCS(str,strRev,n-1,m, dp),
+	                        LCS(str,strRev,n,m-1, dp));
+	    }
+	    return dp[n-1][m-1];
+	}
+	
+	static boolean isPalindrome(String str){
+	    int left = 0, right = str.length()-1;
+	    while(left < right){
+	        if(str.charAt(left) != str.charAt(right)){
+	            return false;
+	        }
+	        left++;
+	        right--;
+	    }
+	    return true;
+	}
