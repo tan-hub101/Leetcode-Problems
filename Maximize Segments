@@ -1,0 +1,21 @@
+static int findMaxSegments(int[] a,int target,int n, int[][] dp){
+	    
+      //trick
+		if(n == 0 && target > 0) {
+			return Integer.MIN_VALUE;
+		}
+	    if(target == 0){
+	        return 0;
+	    }
+	    if(dp[n][target] != -1){
+	        return dp[n][target];
+	    }
+	    
+	    if(a[n-1] <= target){
+	    	dp[n][target] = Math.max(1 + findMaxSegments(a,target-a[n-1],n, dp),
+	    			        findMaxSegments(a,target,n-1, dp));
+	    }else {
+	    	dp[n][target] = findMaxSegments(a,target,n-1, dp);
+	    } 
+	    return dp[n][target];
+	}
