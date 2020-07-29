@@ -1,0 +1,36 @@
+class Solution {
+    //Binary Search
+    //speed range is created 1 - pile with max bananas (1-30)
+    //apply B S on range to find threshold speed
+    public int minEatingSpeed(int[] piles, int H) {
+        
+        //min speed -> 1 Banana per hour
+        int low = 1;
+        //Max Speed (max number of bananas in 1 pile)
+        int high = Integer.MIN_VALUE;
+        for(int i : piles){
+            high = Math.max(high,i);
+        }
+        //Apply BS
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            //if completes with this speed
+            //move to left to min.
+            if(isPossible(piles,H,mid)){
+                high = mid-1;
+            }//Move to right to find min
+            else{
+                low = mid + 1; 
+            }
+        }
+        return low;
+    }
+    boolean isPossible(int[] piles,int H,int speed){
+        int time = 0;
+        for(int i = 0;i<piles.length;i++){
+            int extraHour = piles[i]%speed == 0 ? 0 : 1;
+            time += piles[i]/speed + extraHour;  
+        }
+        return H >= time;
+    }
+}
