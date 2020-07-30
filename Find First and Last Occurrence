@@ -1,0 +1,65 @@
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        
+        int[] result = new int[2];
+        int leftPos = -1, rightPos = -1;
+        
+        if(nums.length == 0){
+            result[0] = leftPos;
+            result[1] = rightPos;
+            return result;
+        }
+        
+        int start = 0, end = nums.length-1;
+        
+        while(start <= end){
+            int mid = start + (end-start)/2;
+            if(nums[mid] == target){
+                leftPos = mid;
+                rightPos = mid;
+                //go to left for first pos
+                leftPos = Math.min(leftPos,searchLeftSearch(nums,target,start,mid-1));
+                //go right for last pos
+                rightPos = Math.max(rightPos,searchRightSearch(nums,target,mid+1,end));
+                break;
+            }
+           else if(nums[mid] < target){
+                start = mid + 1;
+           }else{
+                end = mid - 1;
+           }
+        }
+        result[0] = leftPos;
+        result[1] = rightPos;
+        return result;
+    }
+    
+    int searchLeftSearch(int[] nums,int target, int start, int end){
+        int leftPos = Integer.MAX_VALUE;
+        while(start <= end){
+            int mid = start + (end-start)/2;
+            if(nums[mid] == target){
+                leftPos = Math.min(leftPos,mid);
+                end = mid - 1;
+            }else{
+                start = mid + 1;
+            }
+        }
+        return leftPos;
+    }
+
+    int searchRightSearch(int[] nums,int target, int start, int end){
+
+        int rightPos = Integer.MIN_VALUE;
+        while(start <= end){
+            int mid = start + (end-start)/2;
+            if(nums[mid] == target){
+                rightPos = Math.max(rightPos,mid);
+                start = mid + 1;
+            }else{
+                end = mid - 1;
+            }
+        }
+        return rightPos;
+    }   
+}
