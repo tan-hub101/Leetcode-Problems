@@ -1,0 +1,76 @@
+class Solution {
+    public int search(int[] nums, int target) {
+        
+        if(nums.length == 0){
+            return -1;
+        }
+        if(nums.length == 1 && nums[0] != target){
+            return -1;
+        }
+        //searching for min element -> divides into 2 sorted halves
+        //asc sorted rotated
+        //Binary Search
+        //min element index = n - i
+        int n = nums.length;
+        int start = 0, end = n-1;
+        int minIndex = -1;
+        int mid = 0;
+        while(start <= end){
+            mid = start + (end-start)/2;
+            if(nums[mid] == target){
+                return mid;
+            }
+            //Bounds handling
+            //if min element found
+            if(mid != 0 && mid != n-1 && nums[mid] < nums[mid-1] && nums[mid] < nums[mid+1]){
+                minIndex = n-mid;
+                break;
+            }
+            else if(mid == 0 && nums[mid] < nums[mid+1]){
+                minIndex = n-mid;
+                break;
+            }
+            else if(mid == n-1 && nums[mid] < nums[mid-1]){
+                minIndex = n-mid;
+                break;
+            }
+            //if not
+            //move to unsorted part
+            //right is unsorted
+            if(nums[mid] > nums[end]){
+                start = mid + 1;
+            }//left is unsorted
+            else if(nums[mid] < nums[start]){
+                end = mid - 1;
+            }//if sorted halves after mid, for min -> move left
+            else{
+                end = mid - 1;
+            }
+        }
+        //search in both sorted increasing halves
+        int leftIndex = binarySearch(nums,target,0,mid-1);
+        int rightIndex = binarySearch(nums,target,mid+1,n-1);
+        //if element not present
+        if(leftIndex == -1 && rightIndex == -1){
+            return -1;
+        }
+        if(leftIndex == -1){
+            return rightIndex;
+        }
+        return leftIndex;
+    }
+    int binarySearch(int[] nums,int target,int start,int end){
+        while(start <= end){
+            int mid = start + (end-start)/2;
+            if(nums[mid] == target){
+                return mid;
+            }
+            if(nums[mid] < target){
+                start = mid+1;
+            }else{
+                end = mid-1;
+            }
+        }
+        return -1;
+    }
+}
