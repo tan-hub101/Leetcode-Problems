@@ -1,0 +1,46 @@
+class Solution {
+    //Same As Allocate Books
+    public int shipWithinDays(int[] weights, int D) {
+        
+        int minCapacity = Integer.MAX_VALUE;
+        int maxCapacity = 0;
+        int result = Integer.MAX_VALUE;
+        for(int i : weights){
+            minCapacity = Math.min(minCapacity,i);
+            maxCapacity += i;
+        }
+        //apply binary search on answer (We Know Range)
+        while(minCapacity <= maxCapacity){
+            int capacity = minCapacity + (maxCapacity-minCapacity)/2;
+            //check if this capacity is valid or not
+            //if works -> minimize capacity
+            //move left
+            //if not -> increase capacity -> move right
+            if(isValid(weights,capacity,D)){
+                result = Math.min(result,capacity);
+                maxCapacity = capacity - 1;
+            }else{
+                minCapacity = capacity + 1;
+            }
+        }
+        return result;
+    }
+    boolean isValid(int[] weights,int capacity,int D){
+        int days = 1;
+        int currCap = 0;
+        for(int i=0;i<weights.length;i++){
+            if(weights[i] > capacity){
+                return false;
+            }
+            currCap += weights[i];
+            if(currCap > capacity){
+                days++;
+                currCap = weights[i];
+            }
+            if(days > D){
+                return false;
+            }
+        }
+        return true;
+    }
+}
