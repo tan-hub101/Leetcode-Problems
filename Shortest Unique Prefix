@@ -1,0 +1,71 @@
+void findShortestUniquePrefix(String[] arr){
+	    //create trie with words
+	    for(String s : arr){
+	        if(s.isEmpty()){
+	            continue;
+	        }
+	        createWord(s);
+	    }
+	    //look for unique prefix in every word -> traverse trie
+	    //store refix for every word
+	    findPrefixes(new StringBuilder(""),root);
+	}
+	void createWord(String s){
+	    int i = 0;
+	    TrieNode head = root;
+	    TrieNode node = null;
+	    while(i < s.length()){
+	        node = new TrieNode(s.charAt(i));
+	        TrieNode newHead = insert(head,node);
+	        i++;
+	        head = newHead;
+	    }
+	    node.isEnd = true;
+	}
+	TrieNode insert(TrieNode head, TrieNode node){
+	    char ch = node.value;
+	    if(head.children[ch-'a'] != null){
+	    	TrieNode newhead = head.children[ch-'a'];
+	    	newhead.visitedCount++;
+	        return newhead;
+	    }
+	    head.children[ch-'a'] = node;
+	    node.visitedCount = 1;
+	    return node;
+	}
+	void findPrefixes(StringBuilder s, TrieNode root) {
+		TrieNode head = root;
+		TrieNode[] subNodes = head.children;
+		for(TrieNode node : subNodes) {
+			if(node != null) {
+				s.append(node.value);
+				if(node.visitedCount == 1) {
+					result.add(s.toString());
+					s.deleteCharAt(s.length()-1);
+				}else {
+					findPrefixes(s,node);
+				}
+				
+			}
+		}
+		if(s.length() != 0) {
+			s.deleteCharAt(s.length()-1);
+		}
+	}
+	class TrieNode{
+	    char value;
+	    TrieNode[] children;
+	    int visitedCount;
+	    boolean isEnd;
+	    
+	    public TrieNode(char val){
+	        value = val;
+	        children = new TrieNode[26];
+	        visitedCount = 0;
+	        isEnd = false;
+	    }
+	    @Override
+	    public String toString() {
+	    	return String.valueOf(value);
+	    }
+	}
