@@ -1,0 +1,39 @@
+int findDist(Node root, int a, int b) {
+        //LCA of 2 nodes
+        Node lca = findLca(root,a,b);
+        //if present ->
+        if(lca != null){
+            int d1 = findDistance(lca,a,0);
+            int d2 = findDistance(lca,b,0);
+            return d1 + d2;
+        }
+        return -1;
+    }
+    //assuming both nodes are present
+    Node findLca(Node root,int a,int b){
+        if(root == null){
+            return null;
+        }
+        if(root.data == a || root.data == b){
+            return root;
+        }
+        Node left = findLca(root.left,a,b);
+        Node right = findLca(root.right,a,b);
+        if(left != null && right != null){
+            return root;
+        }
+        return left != null ? left : right;
+    }
+    int findDistance(Node root,int value, int dist){
+        if(root == null){
+            return -1;
+        }
+        if(root.data == value){
+            return dist;
+        }
+        int distance = findDistance(root.left,value, dist+1);
+        if(distance != -1){
+            return distance;
+        }
+        return findDistance(root.right,value, dist+1);
+    }
