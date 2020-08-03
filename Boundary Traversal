@@ -1,0 +1,49 @@
+class Solution
+{
+    ArrayList<Integer> result = new ArrayList<>(); 
+    Set<Integer> set = new HashSet<>();
+	ArrayList<Integer> printBoundary(Node node)
+	{
+	    if(node == null){
+	        return result;
+	    }
+	    //root
+	    result.add(node.data);
+	    leftBoundary(node.left);
+	    leaves(node);
+	    rightBoundary(node.right);
+	    return result;
+	}
+	//top to bottom
+	void leftBoundary(Node node){
+	    if(node == null){
+	        return;
+	    }
+	    result.add(node.data);
+	    set.add(node.data);
+	    leftBoundary(node.left);
+	}
+	void leaves(Node node){
+	    if(node == null){
+	        return;
+	    }
+	    if(node.left == null && node.right == null
+	                         && !set.contains(node.data)){
+	        result.add(node.data);
+	        set.add(node.data);
+	        return;
+	    }
+	    leaves(node.left);
+	    leaves(node.right);
+	}
+	//bottom to top
+	void rightBoundary(Node node){
+	    if(node == null){
+	        return;
+	    }
+	    rightBoundary(node.right);
+	    if(!set.contains(node.data)){
+	        result.add(node.data);
+	    }
+	}
+}
