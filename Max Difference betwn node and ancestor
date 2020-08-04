@@ -1,0 +1,21 @@
+class Solution {
+    int result = Integer.MIN_VALUE;
+    
+    public int maxAncestorDiff(TreeNode root) {
+        
+        findMaxAncestorDiff(root, root.val, root.val);
+        return result;
+    }
+    public void findMaxAncestorDiff(TreeNode root, int min, int max) {
+        if(root == null){
+           return;
+        }
+        int diff1 = Math.abs(root.val - min);
+        int diff2 = Math.abs(root.val - max);
+        
+        result = Math.max(result,Math.max(diff1,diff2));
+        
+        findMaxAncestorDiff(root.left, Math.min(root.val,min), Math.max(root.val,max));
+        findMaxAncestorDiff(root.right, Math.min(root.val,min), Math.max(root.val,max)); 
+    }
+}
