@@ -1,0 +1,61 @@
+public class Codec {
+    StringBuilder serializedTree = new StringBuilder("");
+    //Encodes a tree to a single string.
+    //Input in level order
+    //becuz it is a bst
+    //preorder -> know root pos
+    public String serialize(TreeNode root) {
+        if(root == null){
+            return "";
+        }
+        preorder(root);
+        return serializedTree.toString();
+    }
+    void preorder(TreeNode root){
+        if(root == null){
+            serializedTree.append('*').append(" ");
+            return;
+        }
+        serializedTree.append(root.val).append(" ");
+        preorder(root.left);
+        preorder(root.right);
+    }
+
+    //Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        System.out.println(data);
+        if(data.isEmpty()){
+            return null;
+        }
+        String[] array = data.split(" ");
+        return decode(array,0,array.length-1);
+    }
+    TreeNode decode(String[] array, int start, int end){
+        if(start > end){
+            return null;
+        }
+        
+        if(array[start].equals("*")){
+	            return null;
+	    }
+        int rootVal = Integer.parseInt(array[start]);
+        TreeNode node = new TreeNode(rootVal); 
+        
+        //finding left
+        int i = start+1;
+        while(i <= end){
+            if(array[i].equals("*")){
+                i++;
+                continue;
+            }
+            if(Integer.parseInt(array[i]) > rootVal){
+                break;
+            }
+            i++;
+        }
+        node.left = decode(array,start+1,i-1);
+        node.right = decode(array,i,end);
+        
+        return node;
+    }
+}
