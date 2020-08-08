@@ -1,0 +1,21 @@
+public static Tree convert(Node head, Tree node) {
+        if(head == null){
+            return null;
+        }
+        List<Integer> list = new ArrayList<>();
+        while(head != null){
+            list.add(head.data);
+            head = head.next;
+        }
+        return createTree(list,0);
+    }
+    static Tree createTree(List<Integer> list, int index){
+        if(index >= list.size()){
+            return null;
+        }
+        Tree parent = new Tree(list.get(index));
+        parent.left = createTree(list,2*index+1);
+        parent.right = createTree(list,2*index+2);
+          
+        return parent;  
+    }
