@@ -1,0 +1,26 @@
+class Solution {
+    List<TreeNode> result = new ArrayList<>();
+    Map<String,Integer> map = new HashMap<>();
+    
+    //generate unique id for each subtree(node) -> serialize
+    //store in map, if repeat, add to final result.
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        if(root == null){
+            return result;
+        }
+        solve(root);
+        return result;
+    }
+    //checking at every node
+    String solve(TreeNode root){
+        if(root == null){
+            return "*";
+        }
+        String uid = root.val+","+solve(root.left)+","+solve(root.right);
+        map.put(uid,map.getOrDefault(uid,0)+1);
+        if(map.get(uid) == 2){
+            result.add(root);
+        }
+        return uid;
+    }
+}
