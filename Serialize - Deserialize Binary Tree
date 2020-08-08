@@ -1,0 +1,48 @@
+public class Codec {
+    
+    int index = 0;
+    StringBuilder result = new StringBuilder();
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null){
+            return "";
+        }
+        encode(root);
+        return result.toString();
+    }
+    //preorder
+    void encode(TreeNode root){
+        
+        if(root == null){
+            result.append("* ");
+            return;
+        }
+        result.append(root.val+" ");
+        encode(root.left);
+        encode(root.right); 
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        System.out.println(data);
+        if(data.isEmpty()){
+            return null;
+        }
+        String[] arr = data.split(" ");
+        return decode(arr);
+    }
+    //No comparison -> maintaining global variable
+    //first left subtree -> right (for every subtree)
+    TreeNode decode(String[] arr){
+        if(index == arr.length || arr[index].equals("*")){
+            index++;
+            return null;
+        }
+        TreeNode node = new TreeNode(Integer.parseInt(arr[index]));
+        index++;
+        node.left = decode(arr);
+        node.right = decode(arr);
+        
+        return node;
+    }
+}
