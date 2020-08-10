@@ -1,0 +1,35 @@
+//convert to circularly doubly linked list
+class Tree
+{ 
+    Node head = null;
+    Node tail = null;
+    
+    Node bTreeToClist(Node root)
+    {
+        if(root == null){
+            return null;
+        }
+        convert(root);
+        head.left = tail;
+        tail.right = head;
+        return head;
+    }
+    void convert(Node root){
+        if(root == null){
+            return;
+        }
+        convert(root.left);
+        addNode(root);
+        convert(root.right);
+    }
+    void addNode(Node node){
+        Node newNode = new Node(node.data);
+        if(head == null){
+            head = newNode;
+        }else{
+            newNode.left = tail;
+            tail.right = newNode;
+        }
+        tail = newNode;
+    }
+}
