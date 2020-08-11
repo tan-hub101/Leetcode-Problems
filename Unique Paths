@@ -1,0 +1,32 @@
+class Solution {
+    int totRow, totCol;
+    public int uniquePaths(int m, int n) {
+        if(m == 1 || n == 1){
+            return 1;
+        }
+        
+        totRow = n;
+        totCol = m;
+        int[][] dp = new int[n][m];
+        for(int i =0;i<n;i++){
+            for(int j=0;j<m;j++){
+                dp[i][j] = -1;
+            }
+        }
+        return find(0,0, dp);  
+    }
+    int find(int r, int c, int[][] dp){
+        
+        if(r == totRow || c == totCol){
+            return 0;
+        }
+        if(r == totRow-1 && c == totCol-1){
+            return 1;
+        }
+        if(dp[r][c] != -1){
+            return dp[r][c];
+        }
+        dp[r][c] = find(r+1,c,dp) + find(r,c+1,dp);
+        return dp[r][c];
+    }
+}
