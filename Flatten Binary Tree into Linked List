@@ -1,0 +1,25 @@
+public void flatten(TreeNode root){
+        if(root == null){
+            return;
+        }
+        flattenTree(root);
+    }
+    void flattenTree(TreeNode root){
+        if(root == null || (root.left == null && root.right == null)){
+            return;
+        }
+        flattenTree(root.left);
+        TreeNode right = root.right;
+        TreeNode left = root.left;
+        root.right = left;
+        root.left = null;
+        //finding pos to fit right subtree -> first null in right
+        //could not crack
+        if(right != null){
+            while(root.right != null){
+             root = root.right;
+            }
+            root.right = right;
+            flattenTree(right);  
+        }
+    }
