@@ -1,0 +1,42 @@
+//2 Pointer approach -> 2 lines
+    public int maxArea(int[] height){
+        int left = 0;
+        int right = height.length-1;
+        int maxArea = 0;
+        while(left < right){
+            int len = right - left;
+            int b = height[left] < height[right] ? height[left] : height[right];
+            maxArea = Math.max(maxArea,len*b);
+            //area is limited by shorter line
+            //hence updating that.
+            if(height[left] < height[right]){
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return maxArea;
+    }
+    
+    
+    //TLE
+//     void findMaxArea(int[] height, int start,List<Integer> range){
+        
+//         //calculate maxArea
+//         if(range.size() > 1){
+//             int left = height[range.get(0)];
+//             int right = height[range.get(range.size()-1)];
+//             int len = range.get(range.size()-1) - range.get(0);
+//             int breadth = left < right ? left : right;
+//             maxArea = Math.max(maxArea,len*breadth);
+//         }
+//         if(start == height.length){
+//             return;
+//         }
+//         //took curent element
+//         List<Integer> newRange = new ArrayList<>();
+//         range.add(start);
+//         findMaxArea(height,start+1,range);
+//         //didnt take current element
+//         findMaxArea(height,start+1,newRange);
+//     }
