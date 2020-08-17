@@ -1,0 +1,50 @@
+class Solution {
+    int rows, cols;
+    //pure dfs
+    public int maximalSquare(char[][] matrix) {
+        if(matrix.length == 0){
+            return 0;
+        }
+        if(matrix.length == 1 && matrix[0].length == 1 && matrix[0][0] == '0'){
+            return 0;
+        }
+        
+        rows = matrix.length;
+        cols = matrix[0].length;
+        int maxArea = 0, maxSide = 0;
+        int[][] dp = new int[rows][cols];
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                dp[i][j] = -1;
+            }
+        }
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                maxSide = Math.max(maxSide,find(matrix,i,j,dp));
+            }
+        }
+        return maxSide*maxSide;
+    }
+    int find(char[][] matrix, int r, int c,int[][] dp){
+        
+        if(r >= rows || c >= cols){
+            return 0;
+        }
+        if(matrix[r][c] == '0'){
+            return 0;
+        }
+        if(dp[r][c] != -1){
+            return dp[r][c];
+        }
+
+        //right
+        int right = find(matrix,r,c+1,dp);
+        //diagonal right
+        int diagonal = find(matrix,r+1,c+1,dp);
+        //down
+        int down = find(matrix,r+1,c,dp);
+        
+        dp[r][c] = 1 + Math.min(right,Math.min(diagonal,down));
+        return dp[r][c];
+    }
+}
