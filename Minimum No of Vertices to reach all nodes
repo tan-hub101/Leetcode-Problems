@@ -1,0 +1,22 @@
+public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+        Set<Integer> allSet = new HashSet<>();
+        Set<Integer> allHavingIncomingEdge = new HashSet<>();
+        List<Integer> result = new ArrayList<>();
+        for(List<Integer> edge : edges){
+            int from = edge.get(0);
+            int to = edge.get(1);
+            //adding both to all
+            allSet.add(to);
+            allSet.add(from);
+            
+            //adding only to in incoming set
+            allHavingIncomingEdge.add(to);
+        }
+        List<Integer> allNodes = allSet.stream().collect(Collectors.toList());
+        for(Integer node : allNodes){
+            if(!allHavingIncomingEdge.contains(node)){
+                result.add(node);
+            }
+        }
+        return result;
+    }
