@@ -1,0 +1,29 @@
+class Solution {
+    LinkedList<String> result = new LinkedList<>();
+    
+    public List<String> findItinerary(List<List<String>> tickets) {
+        if(tickets == null || tickets.size() == 0){
+            result.add("JFK");
+            return result;
+        }
+        Map<String,PriorityQueue<String>> map = new HashMap<>();
+        for(List<String> list : tickets){
+            String from = list.get(0);
+            String to = list.get(1);
+            if(!map.containsKey(from)){
+            	map.put(from,new PriorityQueue<>()); 
+            }
+            map.get(from).offer(to);
+        }
+        find(map,"JFK");
+        return result;
+    }
+    void find(Map<String,PriorityQueue<String>> map, String key){
+        PriorityQueue<String> arrivals = map.get(key);
+        while(arrivals != null && !arrivals.isEmpty()){
+            String to = arrivals.poll();
+            find(map,to); 
+        } 
+        result.addFirst(key);
+    } 
+}
