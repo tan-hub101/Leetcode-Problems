@@ -1,0 +1,42 @@
+class Solution {
+    List<String> res = new ArrayList<>();
+    Set<String> set;
+    Map<String,List<String>> map = new HashMap<>();
+    
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        if(s == null || s.isEmpty() || wordDict.isEmpty()){
+            return res;
+        }
+        set = wordDict.stream().collect(Collectors.toSet());
+        wordbreak_dict(s);
+        return map.get(s) == null ? new ArrayList<>() : map.get(s);
+    }
+    List<String> wordbreak_dict(String s){
+		if(s.isEmpty()) {
+			return new ArrayList<>(Arrays.asList(""));
+		}
+        if(map.containsKey(s)){
+            return map.get(s);
+        }
+        int start = 0;
+        String str = "";
+        List<String> subProb;
+        for(int i=start+1;i<=s.length();i++){
+            if(set.contains(s.substring(start,i))){
+            	str = s.substring(start,i);
+                subProb = wordbreak_dict(s.substring(i));
+                if(!map.containsKey(s)) {
+                	map.put(s,new ArrayList<>());
+                }
+                for(String t : subProb){
+                	if(t.isBlank()) {
+                		map.get(s).add(str); 
+                		continue;
+                	}  
+                	map.get(s).add(str + " "+t);
+                }    
+            }
+        }
+        return map.get(s) == null ? new ArrayList<>() : map.get(s);
+    }
+}
