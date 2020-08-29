@@ -1,0 +1,35 @@
+static String MostFrequent(String paragraph, List<String> taboo) 
+    {
+        Set<String> set = new HashSet<>();
+        for(String s : taboo){
+            set.add(s);
+        }
+        Map<String,Integer> map = new HashMap<>();
+        int k=0;
+        String[] arr = paragraph.split("[.|\\s|,|?|(|)|']");
+        while(k < arr.length){
+            String t = arr[k].toLowerCase().trim();
+            if(!t.isEmpty() && !set.contains(t)){
+                map.put(t,map.getOrDefault(t,0)+1);
+            }
+            k++;
+        }
+        //comparator to sort by values
+        Comparator<Map.Entry<String,Integer>> c = (Map.Entry<String,Integer> a, Map.Entry<String,Integer> b) -> {
+			int i = a.getValue();
+			int j = b.getValue();
+			if(i == j) {
+				return 0;
+			}
+			return i > j ? -1 : 1;
+		};
+		//Getting all mappings to sort
+		List<Map.Entry<String,Integer>> entries = new ArrayList<>(map.entrySet());
+		Collections.sort(entries,c);
+		return entries.get(0).getKey();
+    }
+    //Converting back to Sorted Map
+		Map<String,Integer> sortedMap = new LinkedHashMap<>(entries.size());
+		for(Entry<String,Integer> entry : entries) {
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
