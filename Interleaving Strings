@@ -26,12 +26,8 @@ class Solution {
         if(i >= a && j >= b){
             return false;
         }
-        if(i < a){
-           value1 = s1.charAt(i);
-        }
-        if(j < b){
-           value2 = s2.charAt(j); 
-        }
+        value1 = i < a ? s1.charAt(i) : ' ';
+        value2 = j < b ? s2.charAt(j) : ' '; 
         value3 = s3.charAt(k);
         
         if(value1 == value3 && value2 == value3){
