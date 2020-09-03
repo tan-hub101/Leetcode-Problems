@@ -1,0 +1,55 @@
+class Solution {
+    int ans = 0;
+    int totalRows = 4;
+    
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        if(A.length == 0 || B.length == 0 || C.length == 0 || D.length == 0){
+            return 0;
+        }
+        
+        // int n = A.length;
+        // int[][] matrix = new int[4][n];
+        // matrix[0] = A;
+        // matrix[1] = B;
+        // matrix[2] = C;
+        // matrix[3]  = D;
+        
+        return solve_1(A,B,C,D);
+        
+        //solve(matrix,0,0);
+        //return ans;
+    }
+    int solve_1(int[] A, int[] B, int[] C, int[] D){
+        
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i : A){
+            for(int j : B){
+                map.put(i+j,map.getOrDefault(i+j,0)+1);
+            }
+        }
+        int count = 0;
+        for(int c : C){
+            for(int d : D){
+                int sum = c + d;
+                if(map.containsKey(-sum)){
+                    count += map.get(-sum);
+                }
+            }
+        }
+        return count;
+    }
+    //brute force
+    void solve(int[][] matrix, int row, int sum){
+
+        if(row == totalRows){
+            if(sum == 0){
+                ans++;
+            }
+            return;
+        }
+        
+        for(int i=0;i<matrix[0].length;i++){
+            solve(matrix, row+1, sum + matrix[row][i]);
+        }
+    }
+}
