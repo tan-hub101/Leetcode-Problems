@@ -1,0 +1,36 @@
+class Solution {
+    List<List<String>> res1 = new ArrayList<>();
+    
+    public List<List<String>> partition(String s) {
+        solve(s,new ArrayList<>());
+        return res1;
+    }
+    void solve(String s, List<String> res){
+		if(s.isEmpty()) {
+			res1.add(new ArrayList<>(res));
+			return;
+		}
+        for(int i=1;i<=s.length();i++){
+           String str = s.substring(0,i);
+           if(isPalindrome(str)){
+        	   res.add(str);
+        	   solve(s.substring(i),res);
+        	   res.remove(res.size()-1);
+           }
+        }
+	}
+    boolean isPalindrome(String s){
+        if(s.length() == 1){
+            return true;
+        }
+        int left = 0,right = s.length()-1;
+        while(left < right){
+            if(s.charAt(left) != s.charAt(right)){
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
