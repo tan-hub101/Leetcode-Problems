@@ -1,0 +1,40 @@
+class Solution{
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        
+        Set<List<Integer>> result = new HashSet<>();
+        if(nums == null || nums.length < 4){
+            return new ArrayList<>();
+        }
+        Arrays.sort(nums);
+        //2 pointer approach
+        //sorted array
+        //for each pair, check if another pair exists in map
+        //through 2 pointer approach
+        //if yes, Check if that is not the same pair
+        //if not, add to result
+        int n = nums.length;
+        for(int i=0;i<n-3;i++){
+            if(i == 0 || nums[i] != nums[i-1]){
+                for(int j=i+1;j<n-2;j++){
+                    if(nums[j] == nums[i] || nums[j] != nums[j-1]){
+                        int diff = target - (nums[i] + nums[j]);
+                        int low = j+1,high = n-1;
+                        while(low < high){
+                            int sum = nums[low] + nums[high];
+                            if(sum < diff){
+                                low++;
+                            }else if(sum > diff){
+                                high--;
+                            }else{
+                                result.add(new ArrayList<>(Arrays.asList(nums[i],nums[j],nums[low],nums[high])));
+                                low++;
+                                high--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result.stream().collect(Collectors.toList());
+    }
+}
