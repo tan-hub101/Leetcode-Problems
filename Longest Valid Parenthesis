@@ -1,0 +1,26 @@
+public int longestValidParentheses(String s) {
+        if(s == null || s.length() < 2){
+            return 0;
+        }
+        //stack
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(-1);
+        int i = 0, n = s.length();
+        int ans = 0;
+        
+        while(i < n){
+            if(s.charAt(i) == '('){
+                stack.push(i);
+            }
+            else{
+                    stack.pop();
+                    if(!stack.isEmpty()){
+                        ans = Math.max(ans,i-stack.peek());
+                    }else{
+                        stack.push(i);
+                    }
+            }
+            i++;
+        }
+        return ans;
+    } 
