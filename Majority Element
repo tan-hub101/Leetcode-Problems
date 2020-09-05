@@ -1,0 +1,51 @@
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        
+        List<Integer> result = new ArrayList<>();
+        if(nums.length == 0){
+            return result;
+        }
+        //4 variable technique
+        //Moore Voting Algorithm : If majority element 'maj' count is reduced by other elements 
+        //whch are not maj, in the last, maj element will be left as it will be occurring most.
+        //if there is no maj, second pass will help in finding that. Bcuz first pass will return something               //definitely. 
+        Integer unique1 = null, unique2 = null;
+        int count1 = 0, count2 = 0;
+        for(int i : nums){
+            if(unique1 != null && unique1 == i){
+                count1++;
+                
+            }else if(unique2 != null && unique2 == i){
+                count2++;
+                
+            }else if(count1 == 0){
+                unique1 = i;
+                count1++;
+                
+            }else if(count2 == 0){
+                unique2 = i;
+                count2++;
+                
+            }else{
+                count1--;
+                count2--;
+            }
+        }
+        
+        //Second pass to ensure majority elements found are greater than floor(n/3)
+        count1 = 0;
+        count2 = 0;
+
+        for (int n: nums) {
+            if (unique1 != null && n == unique1) count1++;
+            if (unique2 != null && n == unique2) count2++;
+        }
+
+        int n = nums.length;
+        if (count1 > n/3) result.add(unique1);
+        if (count2 > n/3) result.add(unique2);
+
+        return result;
+        
+    }
+}
