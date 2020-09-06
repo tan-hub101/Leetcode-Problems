@@ -1,0 +1,147 @@
+class Solution {
+    
+    public int calculate(String s) {
+        s = s.trim();
+        if(s == null || s.isEmpty()){
+            return 0;
+        }
+        char[] a = s.toCharArray();
+        
+        //convert to postfix - shunting yard algo
+        String r = new String();
+        return convertToPostfix(a);
+        //System.out.println(r);
+        
+        //process postfix
+        //return processPostfix(r);
+    }
+    
+    int convertToPostfix(char[] a){
+		
+		//top of ops will contain high precedence operator
+        Deque<Character> stack = new ArrayDeque<>();
+      
+        Deque<Integer> values = new ArrayDeque<>();
+        
+        for(int i=0; i<a.length;){
+            if(a[i] == ' '){
+            	i++;
+                continue;
+            }
+            String r = new String();
+            if(Character.isDigit(a[i])) {
+            	while(i < a.length && a[i] >= '0' && a[i] <= '9'){
+                    r += a[i]-'0';
+                    i++;
+                }
+            	values.push(Integer.parseInt(r));
+            }
+            else if(a[i] == '+' || a[i] == '-' || a[i] == '*' || a[i] == '/'){
+                while(!stack.isEmpty() && prec(a[i]) <= prec(stack.peek())){
+                    int x = values.pop();
+        	        int y = values.pop();
+        	        values.push(operate(stack.pop(), y, x));
+                }  
+                stack.push(a[i]);
+                i++;  
+            }
+        }
+        while(!stack.isEmpty()){
+        	int x = values.pop();
+        	int y = values.pop();
+        	values.push(operate(stack.pop(), y, x));
+        }
+        
+		return values.pop();
+	}
+    
+    //Aproach 1 (convert -> evaluate) => TLE
+//     String convertToPostfix(char[] a,String r){
+    
+//         //top of ops will contain high precedence operator
+//         Deque<Character> stack = new ArrayDeque<>();
+        
+//         for(int i=0; i<a.length;){
+//             if(a[i] == ' '){
+//             	i++;
+//                 continue;
+//             }
+//             if(Character.isDigit(a[i])) {
+//             	while(i < a.length && a[i] >= '0' && a[i] <= '9'){
+//                     r += a[i]-'0';
+//                     i++;
+//                 }
+//             	r += " ";
+//             }
+//             else if(a[i] == '+' || a[i] == '-' || a[i] == '*' || a[i] == '/'){
+//                 while(!stack.isEmpty() && prec(a[i]) <= prec(stack.peek())){
+//                     r += stack.pop();
+//                     r += " ";
+//                 }  
+//                 stack.push(a[i]);
+//                 i++;  
+//             }
+//         }
+//         while(!stack.isEmpty()){
+//             r += stack.pop();
+//             r += " ";
+//         }
+//         return r.trim();
+//     }
+//     int processPostfix(String s){
+        
+//         Deque<Integer> stack = new ArrayDeque<>();
+//         int i=0;
+//         while(i < s.length()){
+//             char ch = s.charAt(i); 
+//             if(ch == ' ') {
+//             	i++;
+//             	continue;
+//             }
+//             if(ch >= '0' && ch <= '9'){
+//             	int number = 0;
+//             	while(i < s.length() && s.charAt(i) != ' ') {
+//             		number = number*10 + (s.charAt(i) - '0');
+//             		i++;
+//             	}
+//                 stack.push(number);
+//             }else{
+//                 int a = stack.pop();
+//                 int b = stack.pop();
+//                 stack.push(operate(ch,b,a));
+//                 i++;
+//             }
+            
+//         }
+//         StringBuilder res = new StringBuilder();
+//         while(!stack.isEmpty()){
+//             res.insert(0, stack.pop());
+//         }
+//         return Integer.parseInt(res.toString());
+//     }
+    
+    int operate(char op, int a, int b){
+        switch(op){
+            case '+' : return a+b;
+            case '-' : return a-b;
+            case '*' : return a*b;
+            case '/' : return b == 0 ? 0 : a/b ;
+            case '^' : return a^b;
+            default : return 0;
+        }
+    }
+    
+    int prec(char c){
+        switch(c){
+            case '+':
+            case '-': return 1;
+                
+            case '*':
+            case '/': return 2;
+                
+            case '^': return 3; 
+            default : return 0;
+        }
+    }
+   
+}
