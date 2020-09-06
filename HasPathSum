@@ -1,0 +1,12 @@
+boolean solvePathSum(TreeNode root,int sum){
+        
+        if(root == null){
+            return false;
+        }
+        //leaf node
+        if(root.left == null && root.right == null && sum - root.val == 0){
+            return true;
+        }
+        
+        return solvePathSum(root.left,sum-root.val) || solvePathSum(root.right,sum-                                                              root.val);
+    }
