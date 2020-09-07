@@ -13,6 +13,31 @@
  *     }
  * }
  */
+ <--Fast Approach----->
+ class Solution {
+    int total;
+    public int sumNumbers(TreeNode root) {
+        total = 0;
+        solve(root,0);
+        return total;
+    }
+    void solve(TreeNode root, int currSum){
+        if(root == null){
+            return;
+        }
+        //leaf node
+        if(root.left == null && root.right == null){
+            currSum = currSum*10 + root.val;
+            total += currSum;
+            return;
+        }
+        int rootVal = currSum*10 + root.val;
+        solve(root.left,rootVal);
+        solve(root.right,rootVal);
+    }
+  }
+  
+<----Slow Approach---> 
 class Solution {
     Integer sum = 0;
     //path = 0;
