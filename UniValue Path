@@ -1,0 +1,23 @@
+ int solveUnivaluePath(TreeNode root){
+        //no node / leaf node
+        if(root == null) {
+            return 0;
+        }
+        //longest path at root.left
+        int leftEdges = solveUnivaluePath(root.left);
+        //longest path at root.right
+        int rightEdges = solveUnivaluePath(root.right);
+
+        int left = 0, right = 0;
+        //if left == root
+        if(root.left != null && root.left.val == root.val){
+            left = leftEdges + 1;
+        }
+        //if right == root
+        if(root.right != null && root.right.val == root.val){
+            right = rightEdges + 1;
+        }
+        
+        maxPath = Math.max(maxPath,left + right);
+        return Math.max(left, right);
+    }
