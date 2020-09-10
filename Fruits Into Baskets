@@ -1,0 +1,47 @@
+//sliding window + hashmap
+class Solution {
+    int maxFruits = 0;
+    public int totalFruit(int[] a) {
+        if(a.length == 1){
+            return 1;
+        }
+        Map<Integer,Integer> map = new HashMap<>();
+		int start = 0, end = 0, n = a.length;
+		for(;end < n;end++){
+			if(!map.containsKey(a[end])){
+				if(map.size() < 2){
+				   map.put(a[end],1);
+				}else{
+                    maxFruits = Math.max(maxFruits,end-start);
+					//countTotalFruits(map);
+					map.put(a[end],1);
+					while(start < end){
+						map.put(a[start],map.get(a[start])-1);
+						if(map.get(a[start]) == 0){
+							map.remove(a[start]);
+						}
+						start++;
+						if(map.size() <= 2){
+							break;
+						}
+					}
+				}	
+	       }else{
+				map.put(a[end],map.get(a[end])+1);
+			}
+		}
+		// if(map.size() > 0) {
+		// 	countTotalFruits(map);
+		// }
+        maxFruits = Math.max(maxFruits,end-start);
+        return maxFruits;
+    }
+    
+	// void countTotalFruits(Map<Integer,Integer> map){
+	// 	int total = 0;
+	// 	for(Map.Entry<Integer,Integer> entry  : map.entrySet()){
+	// 		total += entry.getValue();
+	// 	}
+	// 	maxFruits = Math.max(maxFruits , total);
+	// }
+}
