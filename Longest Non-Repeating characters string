@@ -1,6 +1,34 @@
 //Can be done through int[] arr = new int[26]
-//Can be done through hashmap element -> index
 
+//Can be done through hashmap element -> index
+    public int lengthOfLongestSubstring(String s) {
+        
+     if(s == null){
+	      return 0;
+	 }
+	if(s.length() < 2){
+		return s.length();
+	}
+	int maxLength = 0;
+	int start = 0,end=0;
+	int n = s.length();
+    //Value -> index
+	Map<Character,Integer> map = new HashMap<>();
+	int currLen = 0;
+	for(;end < n;end++){
+		char ch = s.charAt(end);
+		if(map.containsKey(ch)){
+            //calclulate length till now
+            maxLength = Math.max(maxLength , end-start);
+            //next index of start in constant time
+            start = Math.max(map.get(ch)+1,start);
+        }
+        map.put(ch,end);
+	}
+	maxLength = Math.max(maxLength , end-start);
+	return maxLength;
+    }
+    
 //set solution
 public int lengthOfLongestSubstring(String s) {
         
