@@ -1,0 +1,30 @@
+public String multiply(String num1, String num2) {
+        
+        int n = num1.length();
+        int m = num2.length();
+        if(num1.equals("0") || num2.equals("0")){
+            return "0";
+        }
+        
+        //storing product of 2 nos in arr
+        int[] res = new int[n+m];
+        for(int i=n-1;i>=0;i--){
+            for(int j=m-1;j>=0;j--){
+                int index = i + j + 1;
+                int product = (num1.charAt(i)-'0')*(num2.charAt(j)-'0');
+                int total = res[index] + product;
+                res[index] = total % 10;
+                int carry = total / 10;
+                res[index-1] += carry;
+            } 
+        }
+        //convering arr into string //checking leading zero
+        StringBuilder result = new StringBuilder();
+        for(int i=0;i<res.length;i++){
+            if(i == 0 && res[i] == 0){
+                continue;
+            }
+            result.append(res[i]);
+        }
+        return result.length() == 0 ? "0" : result.toString();
+    }
