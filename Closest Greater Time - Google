@@ -1,0 +1,33 @@
+class Solution {
+    //10:34
+    public String nextClosestTime(String time) {
+        
+        char[] res = time.toCharArray();
+        TreeSet<Integer> set = new TreeSet<>();
+        for(int i=0;i<res.length;i++){
+            char c = res[i];
+            if(c == ':'){
+                continue;
+            }
+            set.add(c - '0');
+        }
+        int n = res.length;
+        for(int i=n-1;i>=0;i--){
+            char c = res[i];
+            if(c == ':'){
+                continue;
+            }
+            int val = c - '0';
+            Integer ceil = set.ceiling(val + 1);
+            //wrong values
+            if(ceil == null || (i == 0 && ceil.intValue() > 2) || (i == 3 && ceil.intValue() > 5) ||                      (res[0] == '2' && i == 1 && ceil.intValue() > 3)){
+                res[i] = (char)(set.first() + '0');
+                
+            }else{
+                res[i] = (char)(ceil + '0');
+                break;
+            }
+        }
+       return String.valueOf(res); 
+    }
+}
