@@ -1,3 +1,5 @@
+//2nd way -> 2 pointer (1 - S, 1 - word and count every repetetive word)
+
 class Solution {
     
      public int expressiveWords(String s, String[] list) {
