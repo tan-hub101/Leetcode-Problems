@@ -1,0 +1,118 @@
+class Solution {
+    
+     public int expressiveWords(String s, String[] list) {
+        
+        if(s == null || s.isEmpty() || list.length == 0){
+		    return 0;
+	    }
+       
+        //generate unique s and its length encoding
+        Pair targetPair = new Pair(s);
+        targetPair.findUniqueWord();
+        
+        int count = 0;
+        for(String word : list){
+            Pair wordPair = new Pair(word);
+            wordPair.findUniqueWord();
+            String actualWord = wordPair.key;
+            if(targetPair.key.equals(actualWord) && findIfStretchy(actualWord,targetPair.list,wordPair.list)){
+                count++;
+            }
+        }
+        return count;   
+    }
+    
+    boolean findIfStretchy(String word, List<Integer> target, List<Integer> source){
+        int n = word.length();
+        int i = 0;
+        while(i < n){
+            int targetChar = target.get(i);
+            int sourceChar = source.get(i);
+            if(targetChar < sourceChar){
+                return false;
+            }
+            if(targetChar > sourceChar && targetChar < 3) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+    
+    class Pair{
+        String key;
+        List<Integer> list;
+        
+        public Pair(String s){
+            key = s;
+            list = new ArrayList<>();
+        }
+        //Run Length Encoding
+        void findUniqueWord(){
+            int i=0, n =  key.length();
+            StringBuilder result = new StringBuilder();
+            int prev = -1;
+            while(i < n){
+                if(i == n-1 || key.charAt(i) != key.charAt(i+1)){
+                    result.append(key.charAt(i));
+                    list.add(i - prev);
+                    prev = i;
+                }
+                i++;
+            }
+            key = result.toString(); 
+        }    
+    }
+    
+    
+    // will not handle cases like sasss
+//     public int expressiveWords(String s, String[] list) {
+        
+//         if(s == null || s.isEmpty() || list.length == 0){
+// 		    return 0;
+// 	    }
+//         int i=0;
+//         Map<Character,Integer> map = new HashMap<>();
+//         while(i < s.length()){
+//             char c = s.charAt(i);
+//             map.put(c,map.getOrDefault(c,0)+1);
+//             i++;
+//         }
+//         String key = findUniqueWord(word);
+        
+//         int count = 0;
+//         for(String word : list){
+//             String wordKey = findUniqueWord(word);
+//             if(key.equals(wordKey) && findIfStretchy(word,map)){
+//                 count++;
+//             }
+//         }
+// 	    return count;   
+//     }
+    
+//     boolean findIfStretchy(String word,Map<Character,Integer> map){
+//         int n = word.length();
+//         Map<Character,Integer> wordMap = new HashMap<>();
+//         int i = 0;
+//         while(i < n){
+//             char c = word.charAt(i);
+//             wordMap.put(c,wordMap.getOrDefault(c,0)+1);
+//             i++;
+//         }
+//         //abcd //klio
+//         for(Map.Entry<Character,Integer> entry : wordMap.entrySet()){
+//             char key = entry.getKey();
+//             int value = entry.getValue();
+
+//             Integer mapKey = map.get(key);
+//             if(mapKey == null || mapKey < value){
+//                 return false;
+//             }
+//             if(mapKey > value && mapKey < 3) {
+//             	return false;
+//             }
+//         }
+//         return true;
+//     }
+
+}
