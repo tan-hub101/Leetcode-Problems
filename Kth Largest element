@@ -1,0 +1,66 @@
+class Solution {
+    int K;
+    int limit;
+    //quick select
+    
+    //heap - 4ms
+    public int findKthLargest(int[] nums, int k) {
+        if(nums.length == 0 || nums.length < k || k <= 0){
+            return -1;
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for(int i=0;i<nums.length;i++){
+            queue.offer(nums[i]);
+            if(queue.size() > k){
+                queue.poll();
+            }
+        }
+        return queue.poll();
+    }
+    //Divide and conquer - 1ms
+//     public int findKthLargest(int[] nums, int k) {
+//         if(nums.length == 0 || nums.length < k || k <= 0){
+//             return -1;
+//         }
+//         K = k;
+//         limit = nums.length-1;
+//         Arrays.sort(nums);
+        
+//         return solve(nums,0,nums.length-1);
+//     }
+//     int solve(int[] nums, int start, int end){
+//         if(start >= end){
+//             return nums[start];
+//         }
+//         int mid;
+//         while(start < end){
+//             mid = start + (end-start)/2;
+//             int diff = limit - mid + 1;
+//             if(diff == K){
+//                 return nums[mid];
+//             }//left
+//             else if(diff < K){
+//                 return solve(nums,start,mid);
+//             }else{
+//                 return solve(nums,mid+1,end);
+//             }
+//         }
+//         return -1;
+//     }
+    
+    //Linear - 2ms
+    // public int findKthLargest(int[] nums, int k) {
+    //     if(nums.length == 0 || nums.length < k){
+    //         return -1;
+    //     }
+    //     Arrays.sort(nums);
+    //     int count = k;
+    //     for(int i=nums.length-1;i>=0;i--){
+    //         count--;
+    //         if(count == 0){
+    //             return nums[i];
+    //         }
+    //     }
+    //     return -1;
+    // }
+}
