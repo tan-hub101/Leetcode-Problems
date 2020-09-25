@@ -1,0 +1,95 @@
+//divide and conquer
+    public ListNode mergeKLists(ListNode[] lists) {
+         if(lists.length == 0){
+            return null;
+        }
+        if(lists.length == 1){
+            return lists[0];
+        }
+        //divides repetetively to bottom and come up after conquering
+        return divide(lists,0,lists.length-1);
+    }
+    //divides in 2 until only 1 is left
+    //[[3,5],[1,2],[7,9],[6,8],[3,8]]
+    ListNode divide(ListNode[] lists, int start, int end){
+        if(start >= end){
+            return lists[start];
+        } 
+        int mid = start + (end - start)/2;
+        ListNode left = divide(lists,start,mid);
+        ListNode right = divide(lists,mid+1,end);
+        
+        return merge_withoutExtraSpace(left,right);
+    }
+    //Merging 2 lists and merging next lists in that result
+//     public ListNode mergeKLists(ListNode[] lists) {
+//         if(lists.length == 0){
+//             return null;
+//         }
+//         if(lists.length == 1){
+//             return lists[0];
+//         }
+        
+//         ListNode head = lists[0];
+//         for(int i=1;i<lists.length;i++){
+//             head = merge_withoutExtraSpace(head,lists[i]);
+//         }
+//         return head;
+//     }
+    //merge in O(1) space
+    ListNode merge_withoutExtraSpace(ListNode list1, ListNode list2){
+        ListNode result = new ListNode(-1);
+        ListNode tail = result;
+        
+        while(list1 != null && list2 != null){
+            if(list1.val >= list2.val){
+                tail.next = list2;
+                list2 = list2.next;
+            }
+            else{
+                tail.next = list1;
+                list1 = list1.next;
+            }
+            tail = tail.next;
+        }
+        tail.next = list1 == null ? list2 : list1;
+        return result.next;
+     }
+
+//      ListNode merge(ListNode head, ListNode list){
+//         ListNode tail = head;
+//         while(tail != null && list != null){
+//             if(tail.val > list.val){
+//                 addNode(list.val);
+//                 list = list.next;
+//             }
+//             else if(tail.val < list.val){
+//                 addNode(tail.val);
+//                 tail = tail.next;
+//             }else{
+//                 addNode(list.val);
+//                 addNode(tail.val);
+//                 tail = tail.next;
+//                 list = list.next;
+//             }
+//         }
+//         while(tail != null){
+//             addNode(tail.val);
+//             tail = tail.next;
+//         }
+//          while(list != null){
+//             addNode(list.val);
+//             list = list.next;
+//         }
+         
+//         return result;
+//      }
+//     void addNode(int value){
+//         ListNode node = new ListNode(value,null);
+//         if(result == null){
+//             result = node;
+//         }else{
+//             resTail.next = node;
+//         }
+//         resTail = node;	
+//     }
