@@ -1,0 +1,70 @@
+class Solution {
+    //Without Extra space
+    public boolean backspaceCompare(String s, String t) {
+        if(s.isEmpty() && t.isEmpty()){
+		    return true;
+	    }
+        int n = s.length(), m = t.length();
+        int i=n-1,j=m-1;
+        int countS = 0, countT=0;
+        while (i >= 0 || j >= 0) {
+            while(i >= 0){
+                if(s.charAt(i) == '#'){
+                    countS++;
+                    i--;
+                }else if(countS > 0){
+                    i--;
+                    countS--;    
+                }
+                else break;
+            }
+            
+            while(j >= 0){
+                if(t.charAt(j) == '#'){
+                    countT++;
+                    j--;
+                }else if(countT > 0){
+                    j--;
+                    countT--;
+                }
+                else break;
+            }
+            if(i >=0 && j >= 0 && s.charAt(i) != t.charAt(j)){
+                return false;
+            }
+            if((i >= 0) != (j >= 0))
+                return false;
+            
+            i--;
+            j--;
+        }
+        return true;
+    }
+    //With Extra space
+//     public boolean backspaceCompare(String s, String t) {
+//         if(s.isEmpty() && t.isEmpty()){
+// 		    return true;
+// 	    }
+//         int n = s.length(), m = t.length();
+//         String newStr1 = find(s,n);
+//         String newStr2 = find(t,m);
+//         return newStr1.equals(newStr2);
+//     }
+    
+//     String find(String s, int n){
+//         StringBuilder S = new StringBuilder();
+//         int i=0;
+//         while(i < n){
+//             if(s.charAt(i) != '#'){
+//                 S.append(s.charAt(i));
+//             }else{
+//                 int size = S.length();
+//                 if(size > 0){
+//                     S.deleteCharAt(size-1);
+//                 }
+//             }
+//             i++;		
+//         }
+//         return S.toString();
+//     }
+}
