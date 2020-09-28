@@ -13,16 +13,18 @@
             int currStart = points[i][0];
             int currEnd = points[i][1];
             if(currStart <= end){
+                //greedy approach
                 end = Math.min(end,currEnd);
             }else{
                 ans++;
+                //greedy approach -> taking as
                 end = currEnd;
             } 
         }
         return ans;
     }
     
-//[1,6],[2,8],[7,12],[10,16]
+//[1,6],[2,8],[7,12],[10,16] -> 
     public int findMinArrowShots(int[][] points) {
         if(points.length == 0){
             return 0;
@@ -34,6 +36,7 @@
         for(int i=1;i<points.length;i++){
             int start = points[i][0];
             int end = points[i][1];
+            //Not greedy -> evaluating all
             if(start <= queue.peek()){
                 if(end < queue.peek()){
                     queue.poll();
