@@ -1,3 +1,27 @@
+//Constant space
+    //[1,6],[2,8],[7,12],[10,16]
+    public int findMinArrowShots(int[][] points) {
+        if(points.length == 0){
+            return 0;
+        }
+        Arrays.sort(points,(a,b) -> a[0]-b[0]);
+        int end = points[0][1];
+        int ans = 1;
+    
+        //always require max diameter to reduce arrows
+        for(int i=1;i<points.length;i++){
+            int currStart = points[i][0];
+            int currEnd = points[i][1];
+            if(currStart <= end){
+                end = Math.min(end,currEnd);
+            }else{
+                ans++;
+                end = currEnd;
+            } 
+        }
+        return ans;
+    }
+    
 //[1,6],[2,8],[7,12],[10,16]
     public int findMinArrowShots(int[][] points) {
         if(points.length == 0){
