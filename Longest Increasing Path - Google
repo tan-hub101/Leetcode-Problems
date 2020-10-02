@@ -1,0 +1,50 @@
+//DFS + Memoization
+//Not DP -> no sub problem -> no topological ordering -> dependencies first and then dependee
+class Solution {
+    int row, col;
+    int[][] dp;
+    public int longestIncreasingPath(int[][] matrix) {
+        if(matrix.length == 0){
+            return 0;
+        }
+        //increasing paths
+        //move fwd if next() is greater than curent
+        row = matrix.length;
+        col = matrix[0].length;
+        int path = 0;
+        int longestPath = 0;
+        dp = new int[row][col];
+        // for(int[] a : dp){
+        //     Arrays.fill(a,-1);
+        // }
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                path = findIncreasingPath(matrix,i,j,-1);
+                longestPath = Math.max(longestPath,path);
+            }
+        }
+        return longestPath;
+    }
+    int findIncreasingPath(int[][] matrix,int i,int j, int prev){
+        //boundary check
+        if(i < 0 || i >= row || j < 0 || j >= col){
+            return 0;
+        }
+        
+        //unfav
+        if(matrix[i][j] <= prev){
+            return 0;
+        }
+        if(dp[i][j] != 0){
+            return dp[i][j];
+        }
+
+        int left = 1 + findIncreasingPath(matrix,i,j-1,matrix[i][j]);
+        int right = 1 + findIncreasingPath(matrix,i,j+1,matrix[i][j]);
+        int down = 1 + findIncreasingPath(matrix,i+1,j,matrix[i][j]);
+        int up = 1 + findIncreasingPath(matrix,i-1,j,matrix[i][j]);
+            
+        dp[i][j] = Math.max(Math.max(left,right),Math.max(up,down));
+        return dp[i][j];
+    }
+}
