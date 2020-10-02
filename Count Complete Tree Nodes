@@ -31,7 +31,7 @@
                 left = pivot+1;
             }else{
                 root = root.left;
-                right = pivot-1;
+                right = pivot-1;  
             }
         }
         return root != null;  
