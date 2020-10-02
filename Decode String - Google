@@ -1,0 +1,49 @@
+class Solution {
+    public String decodeString(String s) {
+        
+        if(s == null || s.isEmpty()){
+			return "";
+		}
+		int n = s.length();
+		int end=0, freq=0;
+		StringBuilder decodedStr = new StringBuilder();
+		StringBuilder midStr;
+		Deque<Character> stack = new LinkedList<>();
+		while(end < n && !Character.isDigit(s.charAt(end))) {
+			decodedStr.append(s.charAt(end));
+			end++;
+		}
+		
+		while(end < n){
+			char c = s.charAt(end);
+			midStr = new StringBuilder();
+			if(c == ']'){
+				while(!Character.isDigit(stack.peek())){
+					midStr.insert(0,stack.pop());
+				}
+                int power = 1;
+                while(!stack.isEmpty() && Character.isDigit(stack.peek())){
+                   freq += (stack.pop()-'0') * power; 
+                   power *= 10;
+                }
+				
+                while(freq > 0){
+					int k = 1;
+					while(k < midStr.length()) {
+						stack.push(midStr.charAt(k));
+						k++;
+					}
+                    freq--;
+                }
+			}else{
+				stack.push(c);
+			}
+			end++;
+		}
+		midStr = new StringBuilder();
+		while(!stack.isEmpty()) {
+			midStr.insert(0,stack.pop());
+		}
+		return decodedStr.append(midStr).toString();
+    }
+}
