@@ -1,0 +1,31 @@
+class Solution {
+    public int minReorder(int n, int[][] connections) {
+        
+        List<List<Integer>> adjacencyList = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            adjacencyList.add(new ArrayList<>());
+        }
+        for(int[] connection : connections){
+            int start = connection[0];
+            int end = connection[1];
+            adjacencyList.get(start).add(end);
+            adjacencyList.get(end).add(-start);
+        }
+        //dfs from 0
+        boolean[] visited = new boolean[n];
+        return dfs(0, adjacencyList, visited);
+    }
+    int dfs(int source,List<List<Integer>> adjacencyList, boolean[] visited){
+        
+        visited[source] = true;
+        List<Integer> neighbours = adjacencyList.get(source);
+        int edgeCount = 0;
+        
+        for(Integer neighbour : neighbours){
+            if(!visited[Math.abs(neighbour)]){
+               edgeCount += dfs(Math.abs(neighbour), adjacencyList, visited) + (neighbour < 0 ? 0 : 1);
+            }
+        }
+        return edgeCount;
+    }
+}
