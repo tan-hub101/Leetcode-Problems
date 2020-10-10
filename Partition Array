@@ -1,0 +1,43 @@
+//Next array
+    public int partitionDisjoint(int[] A) {
+        int n = A.length;
+        int[] maxLeft = new int[n];
+        int[] minright = new int[n];
+        
+        maxLeft[0] = A[0];
+        for(int i=1;i<n;i++){
+            maxLeft[i] = Math.max(maxLeft[i-1],A[i]);
+        }
+        minright[n-1] = A[n-1];
+        for(int i=n-2;i>=0;i--){
+            minright[i] = Math.min(minright[i+1],A[i]);
+        }
+        for(int i=0;i<n-1;i++){
+            if(maxLeft[i] <= minright[i+1]){
+                return i+1;
+            }
+        }
+        return 0;
+    }
+    //TLE
+    // public int partitionDisjoint(int[] A) {
+    //     int n = A.length;
+    //     for(int k=1;k<n;k++){
+    //         int len = isValid(A,k,n);
+    //         if( len > 0){
+    //             return len;
+    //         }
+    //     }
+    //     return 0;
+    // }
+    // int isValid(int[] A,int k,int n){
+    //     //copy both arrays for sorting
+    //     int[] left = Arrays.copyOfRange(A, 0, k);
+    //     int[] right =  Arrays.copyOfRange(A, k,n);
+    //     Arrays.sort(left);
+    //     Arrays.sort(right);
+    //     if(left[left.length-1] <= right[0]){
+    //         return left.length;
+    //     }
+    //     return 0;
+    // }
