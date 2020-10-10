@@ -1,0 +1,60 @@
+public int findClosestLeaf(TreeNode root, int k) {
+        if(root == null){
+            return -1;
+        }
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
+        //shortest path between k and leaf
+        //convert to graph and do bfs
+        Map<TreeNode,List<TreeNode>> graph = new HashMap<>();
+        convertToGraph(graph,root,null);
+        
+        //start bfs from k
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        Set<TreeNode> visited = new HashSet<>();
+        for(TreeNode node : graph.keySet()){
+            if(node != null && node.val == k){
+                queue.offer(node);
+                visited.add(node);
+                break;
+            }
+        }
+        while(!queue.isEmpty()){
+            TreeNode currNode = queue.poll();
+            if(currNode != null){
+                //contains only parent
+                //leaf node
+                if(graph.get(currNode).size() <= 1){
+                    return currNode.val;
+                }
+                for(TreeNode node : graph.get(currNode)){
+                    if(node != null && !visited.contains(node)){
+                        visited.add(node);
+                        queue.offer(node);
+                    }
+                }
+            }  
+        }
+        return -1;
+    }
+    void convertToGraph(Map<TreeNode,List<TreeNode>> graph,TreeNode child, TreeNode parent){
+        if(child != null){
+            if(!graph.containsKey(child)){
+                graph.put(child,new ArrayList<>());
+            }
+            if(!graph.containsKey(parent)){
+                graph.put(parent,new ArrayList<>());
+            }
+            graph.get(child).add(parent);
+            graph.get(parent).add(child);
+            
+            convertToGraph(graph,child.left,child);
+            convertToGraph(graph,child.right,child); 
+        }
+    }
+    //2nd approach
+    //find all nodes to k from root through dfs
+    //traverse all these nodes and record min distance for every leaf node btwn left and right
+    //calculating closest leaf node based on distance
+    
