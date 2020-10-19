@@ -1,0 +1,107 @@
+class Solution {
+    //Approach 2 - Divide and conquer
+    /*Approach 1
+        Skyline is formed by highest points for every start point
+        1. separate start and end point with height
+            [2,-10],[9,10],[3,-15],[7,15].. + for start, - for end
+        2. sort buildings on x axis (in case of same x, greater height should be placed before)
+            [2,-10],[2,-15],[7,15],[9,10]
+        3. get max height for every x
+        4. when height flips -> ans
+        */
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(buildings == null || buildings.length == 0){
+            return result;
+        } 
+        int n = buildings.length;
+        int[][] arr = new int[2*n][2];
+        int j = 0;
+        for(int i=0;i<n;i++){
+            arr[j][0] = buildings[i][0];
+            arr[j][1] = -buildings[i][2];
+            j++;
+            arr[j][0] = buildings[i][1];
+            arr[j][1] = buildings[i][2];
+            j++;
+        }
+        Arrays.sort(arr,(a,b) -> {
+           if(a[0] == b[0]){
+               return Integer.compare(a[1],b[1]);
+           }
+           return Integer.compare(a[0],b[0]);
+        });
+        //get max height for every x
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        int prevHeight = 0;
+        maxHeap.offer(0);
+        
+        for(int[] a : arr){
+           //start point - push to queue
+            if(a[1] < 0){
+                maxHeap.offer(-a[1]);
+            }else{
+                //if end point of building -> remove from queue
+                maxHeap.remove(a[1]);
+            }
+            //getting prev max height
+            int curr = maxHeap.peek();
+            if(prevHeight != curr){
+                List<Integer> list = Arrays.asList(a[0],curr);
+                result.add(list);
+                prevHeight = curr;
+            }  
+        }
+        return result;
+    }
+    
+    //Some cases will not work
+    // public List<List<Integer>> getSkyline(int[][] buildings) {
+    //     List<List<Integer>> result = new ArrayList<>();
+    //     if(buildings == null || buildings.length == 0){
+    //         return result;
+    //     }
+    //     //traverse buildings
+    //     result.add(Arrays.asList(buildings[0][0],buildings[0][2]));
+    //     int prevLeft = buildings[0][0];
+    //     int prevRight = buildings[0][1];
+    //     int prevHeight = buildings[0][2];
+    //     int n = buildings.length;
+    //     for(int i=1;i<n;i++){
+    //         int currLeft = buildings[i][0];
+    //         int currRight = buildings[i][1];
+    //         int currHeight = buildings[i][2];
+    //         boolean flag = false;
+    //         //overlap
+    //         if(currLeft > prevLeft && currLeft < prevRight){
+    //             if(currHeight < prevHeight){
+    //                 result.add(Arrays.asList(prevRight,currHeight));
+    //             }
+    //             if(currHeight > prevHeight){
+    //                 result.add(Arrays.asList(currLeft,currHeight));
+    //             }
+    //             //completely inside
+    //             // if(currRight < prevRight){
+    //             //     result.add(Arrays.asList(currRight,prevHeight));
+    //             //     flag = true;
+    //             // } 
+    //         }
+    //         //no overlap
+    //         else if(currLeft > prevRight){
+    //             //adding 2 points
+    //             result.add(Arrays.asList(prevRight,0));
+    //             result.add(Arrays.asList(currLeft,currHeight));
+    //         }
+    //         else if(currLeft == prevRight){
+    //             result.add(Arrays.asList(currLeft,currHeight));
+    //         }
+    //         if(!flag){
+    //             prevLeft = currLeft;
+    //             prevRight = currRight;
+    //             prevHeight = currHeight;
+    //         }  
+    //     }
+    //     result.add(Arrays.asList(prevRight,0));        
+    //     return result;
+    // }
+}
