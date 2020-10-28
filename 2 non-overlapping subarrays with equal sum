@@ -1,0 +1,52 @@
+class Solution {
+//sliding window -> no negatives
+//len[], min[]
+
+    public int minSumOfLengths(int[] arr, int target) {
+        if(arr.length < 2){
+            return -1;
+        }
+        int start=0,end=0;
+        int n = arr.length;
+        int sum = 0;
+        //len[i] = subarray, with target sum, len starting from start
+        int[] len = new int[n];
+        Arrays.fill(len,Integer.MAX_VALUE);
+        
+        for(;end < n; end++){
+            sum += arr[end];
+            while(start < n && sum >= target){
+                if(sum == target){
+                   int length = end - start + 1;
+                   len[start] = length;
+                }
+                sum = sum - arr[start];
+                start = start + 1; 
+            }
+        }
+        //min[i] = min subarray length from i to n-1
+        int[] min = new int[n];
+        min[n-1] = len[n-1];
+        for(int i=n-2; i>=0; i--){
+            min[i] = Math.min(len[i],min[i+1]);
+        }
+        //computing ans
+        int minSum = Integer.MAX_VALUE;
+        for(int i=0;i<n;i++){
+            if(len[i] < Integer.MAX_VALUE && i+len[i] < n && min[i+len[i]] < Integer.MAX_VALUE){
+               minSum = Math.min(minSum,len[i] + min[i+len[i]]); 
+            }
+            
+        }
+        
+        return minSum == Integer.MAX_VALUE ? -1:minSum;  
+    }
+    /*
+    Input: arr = [3,2,2,4,3], target = 3
+    [3][3] = 2
+    arr = [7,3,4,7], target = 7
+    [7],[3,4]
+    [7],[7] = 2
+    arr = [1,1,5,3,4,7], target = 7
+    */
+}
