@@ -1,5 +1,7 @@
 //No. of structurally unique BST with n nodes
 //No. of full bInary Tree with n+1 leaves
+//f(n) = sum 1-n [f(i-1) * f(n-i)]
+//treat every element in arr to be root(i) and create left(i-1) and right subtrees(n-i) for it.
 
 public int catalan(int n) {
 		if(n == 0 || n == 1) {
@@ -45,3 +47,45 @@ static BigInteger nthCatalan(int n){
 	    }
 	    return dp[n];
 }
+//tabular
+	static int countNumberOfUniqueBSTs(int n){
+	    if(n < 2){
+	        return 1;
+	    }
+	    if(n == 2){
+	        return 2;
+	    }
+	    int[] dp = new int[n+1];
+	    dp[0] = 1;
+	    dp[1] = 1;
+	    dp[2] = 2;
+	    
+	    int i = 3;
+	    while(i <= n) {
+	        int ans = 0;
+	    	for(int j=1; j<=i; j++){
+		        ans += dp[j-1] * dp[i-j];
+		    }
+	    	dp[i] = ans;
+	    	i++;
+	    }
+	    return dp[n];
+	}
+	//recursive
+// 	static int countNumberOfUniqueBSTs(int n){
+// 	    if(n < 2){
+// 	        return 1;
+// 	    }
+// 	    if(n == 2){
+// 	        return 2;
+// 	    }
+// 	    //nth catalan number
+// 	    //f(n) = sum(1 - n)for f(i-1)*f(n-i)
+// 	    int ans = 0;
+// 	    int i = 1;
+// 	    while(i <= n){
+// 	        ans += countNumberOfUniqueBSTs(i-1) * countNumberOfUniqueBSTs(n-i);
+// 	        i++;
+// 	    }
+// 	    return ans;
+// 	}
