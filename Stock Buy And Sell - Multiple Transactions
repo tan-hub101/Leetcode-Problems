@@ -1,0 +1,35 @@
+ArrayList<ArrayList<Integer> > stockBuySell(int prices[], int n) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        int start = 0;
+        int totalProfit = 0;
+        while(start < n){
+            int i = start+1;
+            int min = prices[start];
+            int diff = 0;
+            int minIndex = start;
+            for(;i<n;i++){
+                if(i == start+1 && prices[i] == prices[start]){
+                    minIndex = start+1;
+                    continue;
+                }
+                //breaking into multiple transactions
+                if(prices[i] < prices[i-1]){
+                    break;
+                }
+                if(prices[i] < min){
+                    min = prices[i];
+                    minIndex = i;
+                }
+                diff = Math.max(diff,prices[i]-min);
+            }
+            if(diff > 0) {
+            	totalProfit += diff;
+                ArrayList<Integer> list = new ArrayList<>();
+                list.add(minIndex);
+                list.add(i-1);
+                result.add(list);
+            }
+            start = i;
+        }
+        return result;
+    }
