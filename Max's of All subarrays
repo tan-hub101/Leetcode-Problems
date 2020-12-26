@@ -1,0 +1,49 @@
+class solve{
+    
+    static ArrayList <Integer> max_of_subarrays(int arr[], int n, int k)
+    {
+        ArrayList<Integer> result = new ArrayList<>();
+        if(arr == null || n == 0 || k == 0){
+            return result;
+        }
+        Deque<Integer> queue = new ArrayDeque<>();
+        int start=0,end=0;
+     
+        for(;end<n;end++) {
+            while(!queue.isEmpty() && queue.peekLast() < arr[end]){
+                queue.pollLast();
+            }
+        	queue.offer(arr[end]);
+        	if(end-start+1 == k){
+        	    result.add(queue.peek());
+        	    //removing start from queue
+        	    if(queue.peek() == arr[start]){
+        	        queue.poll();
+        	    }
+        	    start++;
+        	}
+        }
+        return result;
+    }
+    
+    static ArrayList <Integer> max_of_subarrays(int arr[], int n, int k)
+    {
+        ArrayList<Integer> result = new ArrayList<>();
+        if(arr == null || n == 0 || k == 0){
+            return result;
+        }
+        PriorityQueue<Integer> heap = new PriorityQueue<>(Collections.reverseOrder());
+        int start=0,end=0;
+     
+        for(;end<n;end++) {
+        	heap.offer(arr[end]);
+        	if(heap.size() == k) {
+        		int max = heap.peek();
+        		result.add(max);
+        		heap.remove(arr[start]);
+        		start++;
+        	}
+        }
+        return result;
+    }
+}
