@@ -1,0 +1,63 @@
+class Solution {
+    Map<TreeNode, TreeNode> parent;
+    
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        
+        List<Integer> result = new ArrayList<>();
+        if(root == null || target == null){
+            return result;
+        }
+        if(target == root && K == 0){
+            result.add(root.val);
+            return result;
+        }
+        parent = new HashMap();
+        
+        //making tree as undirected graph(access parent) and bfs
+        dfs(root, null);
+        
+        Queue<TreeNode> queue = new LinkedList();
+        queue.add(target);
+
+        Set<TreeNode> seen = new HashSet();
+        seen.add(target);
+
+        int dist = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i=0;i<size;i++){
+                TreeNode node = queue.poll(); 
+                if(dist == K){
+                    result.add(node.val);
+                    continue;
+                }
+                TreeNode left = node.left;
+                TreeNode right = node.right;
+                TreeNode par = parent.get(node);
+                
+                if(left != null && !seen.contains(left)){
+                    queue.offer(left);
+                    seen.add(left);
+                }
+                if(right != null && !seen.contains(right)){
+                    queue.offer(right);
+                    seen.add(right);
+                }
+                if(par != null && !seen.contains(par)){
+                    queue.offer(par);
+                    seen.add(par);
+                }
+            }
+            dist++;
+        }
+        return result;
+    }
+
+    void dfs(TreeNode root, TreeNode par){
+        if(root != null){
+            parent.put(root,par);
+            dfs(root.left, root);
+            dfs(root.right, root);
+        }
+    }
+}
