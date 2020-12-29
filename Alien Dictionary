@@ -1,0 +1,99 @@
+class Solution {
+    boolean flag;
+    
+    public String alienOrder(String[] words) {
+        
+        flag = false;
+        Map<Character,Set<Character>> map = new HashMap<>();
+        
+        //create incoming arr[] for sources arr[i]=0
+        Map<Character,Integer> incomingEdgesMap = new LinkedHashMap<>();
+        
+        int totalWords = words.length;
+        for(int k=0;k<totalWords;k++){
+            String word = words[k];
+            fillAdjacencyList(incomingEdgesMap,word);
+        }
+        
+        //create adjacency list
+        createAdjacencyList(map,words,incomingEdgesMap);
+        
+        if(flag){
+            return "";
+        }
+        
+        //perform bfs
+        Deque<Character> queue = new ArrayDeque<>();
+        //filling queue with sources
+        for(Map.Entry<Character,Integer> entry : incomingEdgesMap.entrySet()){
+            if(entry.getValue() == 0){
+                queue.offer(entry.getKey());
+            }
+        }
+        if(queue.isEmpty()){
+            return "";
+        }
+        String answer = bfs(queue, map, incomingEdgesMap);
+        if(answer.length() != incomingEdgesMap.size()){
+            return "";
+        }
+        return answer;
+    }
+    String bfs(Deque<Character> queue, Map<Character,Set<Character>> map, Map<Character,Integer> incomingEdgesMap){
+        StringBuilder result = new StringBuilder();
+        
+        while(!queue.isEmpty()){
+            char currChar = queue.poll();
+            result.append(currChar);
+            Set<Character> nextWords = map.get(currChar);
+            if(nextWords != null) {
+	            for(Character newChar : nextWords){
+	                    int currIncomingEdgeCount = incomingEdgesMap.get(newChar);
+	                    incomingEdgesMap.put(newChar,currIncomingEdgeCount-1);
+	                    //becomes source
+	                    if(incomingEdgesMap.get(newChar) == 0){
+	                        queue.offer(newChar);  
+	                    }
+	            }
+            }
+        }
+        return result.toString();
+    }
+    
+    void createAdjacencyList(Map<Character,Set<Character>> map, String[] words,Map<Character,Integer> incomingEdgesMap){
+        
+        int totalWords = words.length;
+        for(int k=0;k<totalWords-1;k++){
+            String word1 = words[k];
+            String word2 = words[k+1];
+            int n = word1.length();
+            int m = word2.length();
+            
+            if(n > m && word1.startsWith(word2)) {
+            	flag = true;
+            }
+            
+            int i=0,j=0;
+            while(i < n && j < m){
+                if(word1.charAt(i) == word2.charAt(j)){
+                    i++;
+                    j++;
+                    continue;
+                }
+                if(!map.containsKey(word1.charAt(i))){
+                    map.put(word1.charAt(i),new HashSet<>());
+                }
+                if(map.get(word1.charAt(i)).add(word2.charAt(j))) {
+                    incomingEdgesMap.put(word2.charAt(j),incomingEdgesMap.getOrDefault(word2.charAt(j),0)+1);
+                }
+                break;
+            }
+        } 
+    }
+    
+    void fillAdjacencyList(Map<Character,Integer> incomingEdgesMap, String word) {
+    	for (char c : word.toCharArray()) {
+    		incomingEdgesMap.put(c, 0);
+        }
+    }
+}
