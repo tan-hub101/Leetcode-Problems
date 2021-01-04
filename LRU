@@ -1,0 +1,97 @@
+class LRUCache {
+    Map<Integer,Node> map;
+    Node head,tail;
+    int totalSize;
+
+    public LRUCache(int capacity) {
+        map = new HashMap<>();
+        totalSize = capacity;
+        head = null;
+        tail = null;
+    }
+    
+    public int get(int key) {
+        if(map.containsKey(key)){
+            //System.out.println("getting--"+key);
+            //move node with key in front
+            moveToFront(map.get(key));
+            //return key
+            return map.get(key).value;
+        }
+        return -1;
+    }
+    
+    public void put(int key, int value) {
+        Node newNode;
+        if(map.containsKey(key)){
+            newNode = map.get(key);
+            newNode.value = value;
+            moveToFront(newNode);
+        }else{
+            if(map.size() == totalSize){
+                //delete
+                Node deletedKey = deleteFromTail();
+                //System.out.println("---deleting"+"--"+deletedKey);
+                map.remove(deletedKey.key);
+            }
+            //System.out.println("putting---"+key);
+            newNode = new Node(key,value); 
+            map.put(key,newNode);
+            addToFront(newNode);
+        }
+    }
+    
+    public void addToFront(Node keyNode){
+        if(head == null){
+            head = keyNode;
+            tail = keyNode;
+        }else{
+            Node save = head;
+            head = keyNode;
+            keyNode.next = save;
+            save.prev = keyNode;
+            keyNode.prev = null;
+        }  
+    }
+        
+    public void moveToFront(Node keyNode){
+        boolean isTail = false;
+    	//shifting tail pointer
+		if(tail == keyNode) {
+			isTail = true;
+		}
+		if(keyNode != head) {
+			Node next = keyNode.next;
+            Node prev = keyNode.prev;
+            prev.next = next;
+            if(next != null) {
+            	next.prev = prev;
+            }
+            addToFront(keyNode);
+            if(isTail) {
+            	tail = prev;
+            }
+		}
+    }
+        
+    public Node deleteFromTail(){
+        Node deletedNode = tail;
+        Node prevNode = tail.prev;
+        if(prevNode != null){
+            prevNode.next = null;
+        }
+        tail = prevNode;
+        return deletedNode;
+    }
+    
+    class Node{
+        int key, value;
+        Node next, prev;
+        public Node(int key, int value){
+            this.key = key;
+            this.value = value;
+            next = null;
+            prev = null;
+        }
+    } 
+}
