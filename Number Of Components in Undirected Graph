@@ -1,0 +1,61 @@
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        if(n == 0){
+            return 0;
+        }
+        //1 node
+        if(edges.length == 0){
+            return n;
+        }
+        Map<Integer,List<Integer>> adjacencyMatrix = new HashMap<>();
+        createMetadata(edges,adjacencyMatrix);
+        boolean[] visited = new boolean[n];
+        
+        int connectedComponents = 0;
+        int nodesVisited = 0;
+        
+        for(int node = 0; node < n; node++){
+            if(!visited[node]){
+                nodesVisited = dfsCall(adjacencyMatrix,node,visited,0);
+                if(nodesVisited != n){
+                    connectedComponents++;
+                }else{
+                    return 1;
+                }
+            }
+        }
+        return connectedComponents;
+    }
+    int dfsCall(Map<Integer,List<Integer>> adjacencyMatrix,int node,boolean[] visited,int nodesVisited){
+        
+        visited[node] = true;
+        nodesVisited++;
+        
+        List<Integer> adjacentNodes = adjacencyMatrix.get(node);
+        if(adjacentNodes != null){
+            for(Integer nextNode : adjacentNodes){
+                if(!visited[nextNode]){
+                    nodesVisited = dfsCall(adjacencyMatrix,nextNode,visited,nodesVisited);
+                }
+            }
+        }
+        return nodesVisited;
+    }
+    
+    void createMetadata(int[][] edges,Map<Integer,List<Integer>> adjacencyMatrix){
+        
+        for(int[] edge : edges){
+            int first = edge[0];
+            int second = edge[1];
+            
+            if(!adjacencyMatrix.containsKey(first)){
+                adjacencyMatrix.put(first,new ArrayList<>());
+            }
+            adjacencyMatrix.get(first).add(second);
+            if(!adjacencyMatrix.containsKey(second)){
+                adjacencyMatrix.put(second,new ArrayList<>());
+            }
+            adjacencyMatrix.get(second).add(first);
+        }
+    }
+}
