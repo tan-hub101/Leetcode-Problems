@@ -1,0 +1,68 @@
+class Solution {
+    
+    public int maxEvents(int[][] events) {
+        //sort by end day and if tie, sort by start day
+        Arrays.sort(events,(int[] a, int[] b) -> {
+            if(a[1] == b[1]){
+                return Integer.compare(a[0],b[0]);
+            }
+            return Integer.compare(a[1],b[1]);
+        });
+        //int maxEventsAttended = 0;
+        //keep all available days by traversing events once
+        //TreeSet -> need to look in for day in range (startDay,endDay)
+        TreeSet<Integer> availableDays = new TreeSet<>();
+        
+        int minAvailableDay = 100000, maxAvailableDay = 0;
+        for(int[] event : events){
+            minAvailableDay = Math.min(minAvailableDay,event[0]);
+            maxAvailableDay = Math.max(maxAvailableDay, event[1]);
+        }
+        for(int i = minAvailableDay; i<= maxAvailableDay; i++){
+            availableDays.add(i);
+        }
+        //[1,2,3,5]
+        //[]
+        int maxEventsAttended = 0;
+        
+        for(int[] event : events){
+            int startDay = event[0];
+            int endDay = event[1];
+            Integer availableDay = availableDays.ceiling(startDay);
+            if(availableDay != null && availableDay <= endDay) {
+            	maxEventsAttended++;
+            	availableDays.remove(availableDay);
+            }  
+        }
+        return maxEventsAttended;
+    }
+    
+    //TLE
+//     public int maxEvents(int[][] events) {
+//         //sort by end day and if tie, sort by start day
+//         Arrays.sort(events,(int[] a, int[] b) -> {
+//             if(a[1] == b[1]){
+//                 return Integer.compare(a[0],b[0]);
+//             }
+//             return Integer.compare(a[1],b[1]);
+//         });
+//         //int maxEventsAttended = 0;
+//         //occupiedDays
+//         Set<Integer> occupiedDays = new HashSet<>();
+//         for(int[] event : events){
+//             int startDay = event[0];
+//             int endDay = event[1];
+            
+//             int day = startDay;
+//             //TLE
+//             while(day <= endDay){
+//                 if(!occupiedDays.contains(day)){
+//                     occupiedDays.add(day);
+//                     break;
+//                 }
+//                 day++;
+//             }
+//         }
+//         return occupiedDays.size();
+//     }
+}
